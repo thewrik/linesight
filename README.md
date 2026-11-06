@@ -2,6 +2,8 @@
 
 **Evidence-led triage for industrial machine-vision incidents.** A portfolio project. The plant, its products and its telemetry are fictional and simulated.
 
+**Live demo (static replay, no backend):** https://thewrik.github.io/linesight/ · start with [Walk the journey](https://thewrik.github.io/linesight/#/journey/demo-a-line-speed)
+
 > **Monday, 06:40, Line 3.** A contract-packaging line inspects printed labels and batch codes before cartons are sealed. Four GigE cameras feed an edge PC through a managed PoE switch. The PLC triggers each camera and waits for a pass/fail result, and a management service reports to the plant dashboard. Over the weekend, maintenance replaced the edge PC and the switch. At low speed the line looks healthy. At production speed, images go missing and cartons are diverted to manual inspection.
 >
 > The ticket says: *"Camera 3 keeps going offline. We restarted it twice. Can you send a replacement?"*
