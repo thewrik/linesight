@@ -1,12 +1,16 @@
 import { expect, test, type Page } from "@playwright/test";
 
+// Open gates one at a time, waiting for each to render as open before the next.
 async function passAll(page: Page) {
-  for (let i = 0; i < 20; i++) {
-    const hold = page.getByTestId("hold");
-    if (!(await hold.count())) break;
-    await hold.focus();
+  await expect(page.locator(".gate.k-verdict")).toHaveCount(1); // replay loaded
+  const total = await page.locator(".trail > .gate").count();
+  for (let i = 0; i < total; i++) {
+    const gate = page.getByTestId(`gate-${i}`);
+    if (/\bopen\b/.test((await gate.getAttribute("class")) ?? "")) continue;
+    await expect(gate).toHaveClass(/ready/);
+    await gate.getByTestId("hold").focus();
     await page.keyboard.press("Enter");
-    await page.waitForTimeout(150);
+    await expect(gate).toHaveClass(/open/);
   }
 }
 

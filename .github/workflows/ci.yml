@@ -13,7 +13,7 @@ jobs:
       - run: pip install -e ".[dev]"
       - run: pytest -q
       - name: Reproducible evaluation (no provider credentials)
-        run: python -m linesight.eval.run --modes checklist,rules,replay --out eval.json
+        run: python -m linesight.eval.run --out eval.json
       - uses: actions/upload-artifact@v4
         with: { name: eval-results, path: eval.json }
 
@@ -30,7 +30,7 @@ jobs:
       - name: Regenerate static replays and evaluation data
         run: |
           python -m linesight.export_static frontend/public/data
-          python -m linesight.eval.run --modes checklist,rules,replay --out frontend/public/data/eval.json
+          python -m linesight.eval.run --out frontend/public/data/eval.json
       - run: npm ci
         working-directory: frontend
       - run: npx playwright install --with-deps chromium
