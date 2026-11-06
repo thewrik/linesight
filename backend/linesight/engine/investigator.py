@@ -343,7 +343,9 @@ class Investigator:
                 d.score_detail = {"hypotheses": hyp_ids, "severity_weight": sev, "open_symptoms": sym_n,
                                   "handoff": bool(hand), "effort": dd.effort, "disruption": dd.disruption, "cost": cost}
                 d.for_hypotheses = hyp_ids
-                d.reason = f"discriminates {len(hyp_ids)} hypotheses" + (f", tests {sym_n} open symptom(s)" if sym_n else "")
+                parts = ([f"discriminates {len(hyp_ids)} hypotheses"] if hyp_ids else []) + (
+                    [f"tests {sym_n} open symptom reading(s)"] if sym_n else []) + (["completes the engineering handoff"] if hand else [])
+                d.reason = ", ".join(parts)
             diags.append(d)
         case.diagnostics = diags
         candidates = sorted([d for d in diags if d.state == DiagnosticState.candidate],

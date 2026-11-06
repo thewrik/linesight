@@ -14,6 +14,8 @@ test("landing explains the incident and offers three demos", async ({ page }) =>
   await page.goto("/");
   await expect(page.getByText("Camera 3 keeps going offline").first()).toBeVisible();
   await expect(page.locator(".demo-card")).toHaveCount(3);
+  await page.getByTestId("journey-demo-a-line-speed").click();
+  await expect(page.locator(".gate")).toHaveCount(11);
   await expect(page.getByText("static replay · no backend")).toBeVisible();
 });
 

@@ -9,7 +9,7 @@ import { Outputs, EvidenceDrawer, TraceView, Timeline, GuardEvents } from "./Out
 
 type Api = { modes: string[]; live_model: string | null } | null;
 
-export default function CaseView({ scenarioId, api }: { scenarioId: string; api: Api }) {
+export default function CaseView({ scenarioId, api, initialStep }: { scenarioId: string; api: Api; initialStep?: number }) {
   const [history, setHistory] = useState<Snapshot[]>([]);
   const [driver, setDriver] = useState<StaticDriver | null>(null);
   const [notice, setNotice] = useState("");
@@ -31,11 +31,12 @@ export default function CaseView({ scenarioId, api }: { scenarioId: string; api:
       } else {
         const r = await fetchJson<Replay>(dataUrl(`replays/${scenarioId}.json`));
         const d = new StaticDriver(r);
+        if (initialStep !== undefined) d.i = Math.max(0, Math.min(initialStep, r.frames.length - 1));
         setDriver(d); setHistory(d.history); setNotice(r.notice);
       }
     } catch (e: any) { setErr(String(e.message ?? e)); }
     setBusy(false);
-  }, [scenarioId, useApi, api]);
+  }, [scenarioId, useApi, api, initialStep]);
 
   useEffect(() => { start(mode); }, []); // eslint-disable-line react-hooks/exhaustive-deps
 

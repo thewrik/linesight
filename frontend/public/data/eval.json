@@ -1,6 +1,6 @@
 {
- "generated_at": "2026-11-06T19:22:43+00:00",
- "git_rev": "unknown",
+ "generated_at": "2026-11-06T19:39:36+00:00",
+ "git_rev": "c2a2341",
  "rules_version": "2026.11.3",
  "notice": "Reproducible evaluation on the synthetic casebook.\n\n    python -m linesight.eval.run                 # checklist, rules, replay (+ live if credentials)\n    python -m linesight.eval.run --modes rules   # one baseline\n    python -m linesight.eval.run --out ../frontend/public/data/eval.json\n\nThis is a synthetic benchmark authored together with the rules. It measures\nconsistency of the engine against its own casebook, not field performance.\nEffort numbers are synthetic proxies, not measured technician time.",
  "modes": {
@@ -21,7 +21,7 @@
      "mean_diagnostics": 9,
      "mean_technician_questions": 0,
      "mean_effort_proxy": 1.65,
-     "median_latency_ms": 10.3,
+     "median_latency_ms": 10.4,
      "total_cost_usd": 0.0
     },
     "heldout": {
@@ -39,7 +39,7 @@
      "mean_diagnostics": 9,
      "mean_technician_questions": 0,
      "mean_effort_proxy": 1.57,
-     "median_latency_ms": 9.9,
+     "median_latency_ms": 10.4,
      "total_cost_usd": 0.0
     },
     "demo": {
@@ -57,7 +57,7 @@
      "mean_diagnostics": 9,
      "mean_technician_questions": 0,
      "mean_effort_proxy": 1.33,
-     "median_latency_ms": 11.1,
+     "median_latency_ms": 10.7,
      "total_cost_usd": 0.0
     },
     "paraphrase": {
@@ -75,7 +75,7 @@
      "mean_diagnostics": 9,
      "mean_technician_questions": 0,
      "mean_effort_proxy": 1.2,
-     "median_latency_ms": 9.7,
+     "median_latency_ms": 10.0,
      "total_cost_usd": 0.0
     },
     "all": {
@@ -93,7 +93,7 @@
      "mean_diagnostics": 9,
      "mean_technician_questions": 0,
      "mean_effort_proxy": 1.5,
-     "median_latency_ms": 9.7,
+     "median_latency_ms": 10.3,
      "total_cost_usd": 0.0
     }
    },
@@ -117,7 +117,7 @@
       "diagnostics": 9,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 14.371250057592988,
+      "latency_ms": 16.11170801334083,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -157,7 +157,7 @@
       "diagnostics": 9,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 11.0877500846982,
+      "latency_ms": 10.659457999281585,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -195,7 +195,7 @@
       "diagnostics": 9,
       "technician_questions": 0,
       "effort": 0,
-      "latency_ms": 8.026708965189755,
+      "latency_ms": 7.6182500924915075,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [],
@@ -233,7 +233,7 @@
       "diagnostics": 9,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 16.547375009395182,
+      "latency_ms": 16.095333034172654,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -273,7 +273,7 @@
       "diagnostics": 9,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 12.045832932926714,
+      "latency_ms": 10.512416018173099,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -313,7 +313,7 @@
       "diagnostics": 9,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 6.699708057567477,
+      "latency_ms": 6.439249962568283,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -354,7 +354,7 @@
       "diagnostics": 9,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 6.677667028270662,
+      "latency_ms": 6.574457976967096,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -394,7 +394,7 @@
       "diagnostics": 9,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 10.339375003241003,
+      "latency_ms": 10.360832908190787,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -434,7 +434,7 @@
       "diagnostics": 9,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 11.23345794621855,
+      "latency_ms": 10.429374990053475,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -474,7 +474,7 @@
       "diagnostics": 9,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 13.796834042295814,
+      "latency_ms": 14.501416007988155,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -514,7 +514,7 @@
       "diagnostics": 9,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 13.731707935221493,
+      "latency_ms": 14.569332939572632,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -554,7 +554,7 @@
       "diagnostics": 9,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 13.416624977253377,
+      "latency_ms": 13.60441604629159,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -594,7 +594,7 @@
       "diagnostics": 9,
       "technician_questions": 0,
       "effort": 0,
-      "latency_ms": 7.598375086672604,
+      "latency_ms": 7.4765419121831656,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [],
@@ -632,7 +632,7 @@
       "diagnostics": 9,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 13.657666044309735,
+      "latency_ms": 14.230666914954782,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -672,7 +672,7 @@
       "diagnostics": 9,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 9.697958012111485,
+      "latency_ms": 10.329333017580211,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -709,7 +709,7 @@
       "diagnostics": 9,
       "technician_questions": 0,
       "effort": 0,
-      "latency_ms": 7.398457964882255,
+      "latency_ms": 7.54779193084687,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [],
@@ -743,7 +743,7 @@
       "diagnostics": 9,
       "technician_questions": 0,
       "effort": 0,
-      "latency_ms": 7.380915922112763,
+      "latency_ms": 7.397874956950545,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [],
@@ -787,7 +787,7 @@
       "diagnostics": 9,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 9.718958055600524,
+      "latency_ms": 10.419333004392684,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -833,7 +833,7 @@
       "diagnostics": 9,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 9.724791976623237,
+      "latency_ms": 10.240625008009374,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -874,7 +874,7 @@
       "diagnostics": 9,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 14.188667060807347,
+      "latency_ms": 14.82587493956089,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -914,7 +914,7 @@
       "diagnostics": 9,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 14.797791023738682,
+      "latency_ms": 15.576791018247604,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -954,7 +954,7 @@
       "diagnostics": 9,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 9.611499961465597,
+      "latency_ms": 10.786417056806386,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -992,7 +992,7 @@
       "diagnostics": 9,
       "technician_questions": 0,
       "effort": 0,
-      "latency_ms": 7.380625000223517,
+      "latency_ms": 8.407374960370362,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [],
@@ -1030,7 +1030,7 @@
       "diagnostics": 9,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 6.3122499268502,
+      "latency_ms": 6.987000000663102,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -1070,7 +1070,7 @@
       "diagnostics": 9,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 3.869124921038747,
+      "latency_ms": 4.448084044270217,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -1110,7 +1110,7 @@
       "diagnostics": 9,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 0.3718339139595628,
+      "latency_ms": 0.3783750580623746,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -1150,7 +1150,7 @@
       "diagnostics": 9,
       "technician_questions": 0,
       "effort": 0,
-      "latency_ms": 7.321374956518412,
+      "latency_ms": 8.313540951348841,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [],
@@ -1188,7 +1188,7 @@
       "diagnostics": 9,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 14.344042050652206,
+      "latency_ms": 14.350292040035129,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -1229,7 +1229,7 @@
       "diagnostics": 9,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 14.731292030774057,
+      "latency_ms": 13.961083954200149,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -1269,7 +1269,7 @@
       "diagnostics": 9,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 10.109624941833317,
+      "latency_ms": 10.039082961156964,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -1310,7 +1310,7 @@
       "diagnostics": 9,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 13.351207948289812,
+      "latency_ms": 13.906167005188763,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -1352,7 +1352,7 @@
       "diagnostics": 9,
       "technician_questions": 0,
       "effort": 0,
-      "latency_ms": 7.557124947197735,
+      "latency_ms": 7.90075003169477,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [],
@@ -1391,7 +1391,7 @@
       "diagnostics": 9,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 13.327499967999756,
+      "latency_ms": 13.322875020094216,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -1433,7 +1433,7 @@
       "diagnostics": 9,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 14.577707974240184,
+      "latency_ms": 15.132749918848276,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -1473,7 +1473,7 @@
       "diagnostics": 9,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 14.4745830912143,
+      "latency_ms": 14.97449993621558,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -1513,7 +1513,7 @@
       "diagnostics": 9,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 9.755042032338679,
+      "latency_ms": 10.137957986444235,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -1551,7 +1551,7 @@
       "diagnostics": 9,
       "technician_questions": 0,
       "effort": 0,
-      "latency_ms": 7.39341601729393,
+      "latency_ms": 7.510499912314117,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [],
@@ -1589,7 +1589,7 @@
       "diagnostics": 9,
       "technician_questions": 0,
       "effort": 0,
-      "latency_ms": 7.342083030380309,
+      "latency_ms": 7.707290933467448,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [],
@@ -1627,7 +1627,7 @@
       "diagnostics": 9,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 13.473166967742145,
+      "latency_ms": 14.186042011715472,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -1667,7 +1667,7 @@
       "diagnostics": 9,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 9.68250003643334,
+      "latency_ms": 9.950208943337202,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -1707,7 +1707,7 @@
       "diagnostics": 9,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 13.036042102612555,
+      "latency_ms": 13.61820800229907,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -1747,7 +1747,7 @@
       "diagnostics": 9,
       "technician_questions": 0,
       "effort": 0,
-      "latency_ms": 7.346916012465954,
+      "latency_ms": 7.475042017176747,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [],
@@ -1783,7 +1783,7 @@
       "diagnostics": 9,
       "technician_questions": 0,
       "effort": 0,
-      "latency_ms": 7.351666921749711,
+      "latency_ms": 7.666458957828581,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [],
@@ -1821,7 +1821,7 @@
       "diagnostics": 9,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 9.664625045843422,
+      "latency_ms": 10.265583987347782,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -2927,7 +2927,7 @@
      "mean_diagnostics": 4.82,
      "mean_technician_questions": 0.06,
      "mean_effort_proxy": 2.59,
-     "median_latency_ms": 9.3,
+     "median_latency_ms": 11.0,
      "total_cost_usd": 0.0
     },
     "heldout": {
@@ -2963,7 +2963,7 @@
      "mean_diagnostics": 5.67,
      "mean_technician_questions": 0.33,
      "mean_effort_proxy": 2.67,
-     "median_latency_ms": 9.7,
+     "median_latency_ms": 9.9,
      "total_cost_usd": 0.0
     },
     "paraphrase": {
@@ -2981,7 +2981,7 @@
      "mean_diagnostics": 5.5,
      "mean_technician_questions": 0.3,
      "mean_effort_proxy": 2.7,
-     "median_latency_ms": 6.2,
+     "median_latency_ms": 6.7,
      "total_cost_usd": 0.0
     },
     "all": {
@@ -2999,7 +2999,7 @@
      "mean_diagnostics": 5.23,
      "mean_technician_questions": 0.2,
      "mean_effort_proxy": 2.75,
-     "median_latency_ms": 9.3,
+     "median_latency_ms": 10.1,
      "total_cost_usd": 0.0
     }
    },
@@ -3026,7 +3026,7 @@
       "diagnostics": 7,
       "technician_questions": 0,
       "effort": 5,
-      "latency_ms": 53.75249998178333,
+      "latency_ms": 62.023041071370244,
       "cost_usd": 0.0,
       "guard_types": [
        "request_noted"
@@ -3075,7 +3075,7 @@
       "diagnostics": 4,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 9.741082903929055,
+      "latency_ms": 9.865792002528906,
       "cost_usd": 0.0,
       "guard_types": [
        "request_noted"
@@ -3124,7 +3124,7 @@
       "diagnostics": 6,
       "technician_questions": 1,
       "effort": 1,
-      "latency_ms": 2.943042083643377,
+      "latency_ms": 2.8917500749230385,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [],
@@ -3169,7 +3169,7 @@
       "diagnostics": 8,
       "technician_questions": 0,
       "effort": 5,
-      "latency_ms": 54.596625035628676,
+      "latency_ms": 54.96724997647107,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -3216,7 +3216,7 @@
       "diagnostics": 3,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 7.356249960139394,
+      "latency_ms": 7.731582969427109,
       "cost_usd": 0.0,
       "guard_types": [
        "request_noted"
@@ -3265,7 +3265,7 @@
       "diagnostics": 3,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 7.436000043526292,
+      "latency_ms": 9.291958063840866,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -3313,7 +3313,7 @@
       "diagnostics": 2,
       "technician_questions": 0,
       "effort": 0,
-      "latency_ms": 0.8236669236794114,
+      "latency_ms": 2.0293750567361712,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [],
@@ -3358,7 +3358,7 @@
       "diagnostics": 2,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 11.567458976060152,
+      "latency_ms": 15.864291111938655,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -3405,7 +3405,7 @@
       "diagnostics": 2,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 11.538416030816734,
+      "latency_ms": 17.16104196384549,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -3452,7 +3452,7 @@
       "diagnostics": 6,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 14.815208967775106,
+      "latency_ms": 17.464499920606613,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -3499,7 +3499,7 @@
       "diagnostics": 6,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 14.644541079178452,
+      "latency_ms": 16.146915964782238,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -3546,7 +3546,7 @@
       "diagnostics": 7,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 14.503667014651,
+      "latency_ms": 15.502833994105458,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -3593,7 +3593,7 @@
       "diagnostics": 3,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 2.294874982908368,
+      "latency_ms": 2.544082934036851,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -3640,7 +3640,7 @@
       "diagnostics": 10,
       "technician_questions": 1,
       "effort": 10,
-      "latency_ms": 11.312375077977777,
+      "latency_ms": 11.665707919746637,
       "cost_usd": 0.0,
       "guard_types": [
        "request_noted"
@@ -3687,7 +3687,7 @@
       "diagnostics": 4,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 9.280415950343013,
+      "latency_ms": 10.078249964863062,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -3729,7 +3729,7 @@
       "diagnostics": 1,
       "technician_questions": 0,
       "effort": 0,
-      "latency_ms": 6.546083022840321,
+      "latency_ms": 6.850874982774258,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [],
@@ -3768,7 +3768,7 @@
       "diagnostics": 8,
       "technician_questions": 0,
       "effort": 0,
-      "latency_ms": 8.789542014710605,
+      "latency_ms": 10.402082931250334,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [],
@@ -3820,7 +3820,7 @@
       "diagnostics": 4,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 9.311583009548485,
+      "latency_ms": 11.017333017662168,
       "cost_usd": 0.0,
       "guard_types": [
        "embedded_instruction"
@@ -3875,7 +3875,7 @@
       "diagnostics": 4,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 9.236083016730845,
+      "latency_ms": 10.40245802141726,
       "cost_usd": 0.0,
       "guard_types": [
        "request_noted",
@@ -3928,7 +3928,7 @@
       "diagnostics": 9,
       "technician_questions": 0,
       "effort": 7,
-      "latency_ms": 49.52770797535777,
+      "latency_ms": 53.16941696219146,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -3976,7 +3976,7 @@
       "diagnostics": 8,
       "technician_questions": 0,
       "effort": 5,
-      "latency_ms": 54.371625068597496,
+      "latency_ms": 53.41724993195385,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -4023,7 +4023,7 @@
       "diagnostics": 4,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 10.712084011174738,
+      "latency_ms": 10.665499954484403,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -4070,7 +4070,7 @@
       "diagnostics": 8,
       "technician_questions": 1,
       "effort": 1,
-      "latency_ms": 3.085459000431001,
+      "latency_ms": 3.7382920272648335,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [],
@@ -4115,7 +4115,7 @@
       "diagnostics": 3,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 7.373624946922064,
+      "latency_ms": 7.369874976575375,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -4162,7 +4162,7 @@
       "diagnostics": 2,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 8.908375049941242,
+      "latency_ms": 10.025167022831738,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -4209,7 +4209,7 @@
       "diagnostics": 6,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 7.7977090841159225,
+      "latency_ms": 7.807541987858713,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -4256,7 +4256,7 @@
       "diagnostics": 3,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 2.373958006501198,
+      "latency_ms": 2.3878749925643206,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -4303,7 +4303,7 @@
       "diagnostics": 2,
       "technician_questions": 1,
       "effort": 7,
-      "latency_ms": 1.6235420480370522,
+      "latency_ms": 1.6271659405902028,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [],
@@ -4347,7 +4347,7 @@
       "diagnostics": 9,
       "technician_questions": 0,
       "effort": 3,
-      "latency_ms": 11.651540989987552,
+      "latency_ms": 11.98812504298985,
       "cost_usd": 0.0,
       "guard_types": [
        "request_noted"
@@ -4394,7 +4394,7 @@
       "diagnostics": 4,
       "technician_questions": 0,
       "effort": 0,
-      "latency_ms": 1.0229999898001552,
+      "latency_ms": 1.1305410880595446,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [],
@@ -4438,7 +4438,7 @@
       "diagnostics": 9,
       "technician_questions": 0,
       "effort": 3,
-      "latency_ms": 17.004125053063035,
+      "latency_ms": 17.865875037387013,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [],
@@ -4487,7 +4487,7 @@
       "diagnostics": 6,
       "technician_questions": 1,
       "effort": 1,
-      "latency_ms": 2.6009579887613654,
+      "latency_ms": 3.189958049915731,
       "cost_usd": 0.0,
       "guard_types": [
        "embedded_instruction",
@@ -4536,7 +4536,7 @@
       "diagnostics": 3,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 1.9825000781565905,
+      "latency_ms": 2.2176660131663084,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -4585,7 +4585,7 @@
       "diagnostics": 9,
       "technician_questions": 1,
       "effort": 10,
-      "latency_ms": 11.943874997086823,
+      "latency_ms": 12.264707940630615,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [],
@@ -4630,7 +4630,7 @@
       "diagnostics": 8,
       "technician_questions": 0,
       "effort": 5,
-      "latency_ms": 49.57695794291794,
+      "latency_ms": 57.25208297371864,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -4677,7 +4677,7 @@
       "diagnostics": 4,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 10.397166013717651,
+      "latency_ms": 11.250333045609295,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -4724,7 +4724,7 @@
       "diagnostics": 8,
       "technician_questions": 1,
       "effort": 1,
-      "latency_ms": 2.9657079139724374,
+      "latency_ms": 3.3913329243659973,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [],
@@ -4769,7 +4769,7 @@
       "diagnostics": 1,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 0.7266249740496278,
+      "latency_ms": 0.8257919689640403,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -4816,7 +4816,7 @@
       "diagnostics": 10,
       "technician_questions": 1,
       "effort": 10,
-      "latency_ms": 11.437959037721157,
+      "latency_ms": 12.831166968680918,
       "cost_usd": 0.0,
       "guard_types": [
        "request_noted"
@@ -4863,7 +4863,7 @@
       "diagnostics": 4,
       "technician_questions": 0,
       "effort": 0,
-      "latency_ms": 2.004625042900443,
+      "latency_ms": 2.393375034444034,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [],
@@ -4908,7 +4908,7 @@
       "diagnostics": 7,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 14.657458988949656,
+      "latency_ms": 15.642041922546923,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -4955,7 +4955,7 @@
       "diagnostics": 1,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 0.7056660251691937,
+      "latency_ms": 0.807833974249661,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -5002,7 +5002,7 @@
       "diagnostics": 8,
       "technician_questions": 1,
       "effort": 1,
-      "latency_ms": 2.8925000224262476,
+      "latency_ms": 3.064083051867783,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [],
@@ -5047,7 +5047,7 @@
       "diagnostics": 4,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 9.374333079904318,
+      "latency_ms": 9.970459039323032,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -5144,7 +5144,7 @@
      "mean_diagnostics": 4.82,
      "mean_technician_questions": 0.06,
      "mean_effort_proxy": 2.59,
-     "median_latency_ms": 11.0,
+     "median_latency_ms": 10.2,
      "total_cost_usd": 0.0
     },
     "heldout": {
@@ -5162,7 +5162,7 @@
      "mean_diagnostics": 5.43,
      "mean_technician_questions": 0.29,
      "mean_effort_proxy": 3,
-     "median_latency_ms": 7.4,
+     "median_latency_ms": 9.4,
      "total_cost_usd": 0.0
     },
     "demo": {
@@ -5180,7 +5180,7 @@
      "mean_diagnostics": 5.67,
      "mean_technician_questions": 0.33,
      "mean_effort_proxy": 2.67,
-     "median_latency_ms": 9.9,
+     "median_latency_ms": 10.0,
      "total_cost_usd": 0.0
     },
     "paraphrase": {
@@ -5198,7 +5198,7 @@
      "mean_diagnostics": 5.5,
      "mean_technician_questions": 0.3,
      "mean_effort_proxy": 2.7,
-     "median_latency_ms": 6.9,
+     "median_latency_ms": 7.0,
      "total_cost_usd": 0.0
     },
     "all": {
@@ -5216,7 +5216,7 @@
      "mean_diagnostics": 5.23,
      "mean_technician_questions": 0.2,
      "mean_effort_proxy": 2.75,
-     "median_latency_ms": 9.6,
+     "median_latency_ms": 10.0,
      "total_cost_usd": 0.0
     }
    },
@@ -5243,7 +5243,7 @@
       "diagnostics": 7,
       "technician_questions": 0,
       "effort": 5,
-      "latency_ms": 53.958999924361706,
+      "latency_ms": 53.198957932181656,
       "cost_usd": 0.0,
       "guard_types": [
        "request_noted"
@@ -5292,7 +5292,7 @@
       "diagnostics": 4,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 9.900958044454455,
+      "latency_ms": 10.011250036768615,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -5339,7 +5339,7 @@
       "diagnostics": 6,
       "technician_questions": 1,
       "effort": 1,
-      "latency_ms": 2.9114590724930167,
+      "latency_ms": 3.343332908116281,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [],
@@ -5384,7 +5384,7 @@
       "diagnostics": 8,
       "technician_questions": 0,
       "effort": 5,
-      "latency_ms": 53.423875011503696,
+      "latency_ms": 53.69066703133285,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -5431,7 +5431,7 @@
       "diagnostics": 3,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 7.260999991558492,
+      "latency_ms": 7.50837498344481,
       "cost_usd": 0.0,
       "guard_types": [
        "request_noted"
@@ -5480,7 +5480,7 @@
       "diagnostics": 3,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 7.289250032044947,
+      "latency_ms": 7.992625003680587,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -5528,7 +5528,7 @@
       "diagnostics": 2,
       "technician_questions": 0,
       "effort": 0,
-      "latency_ms": 0.8330000564455986,
+      "latency_ms": 1.060917042195797,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [],
@@ -5573,7 +5573,7 @@
       "diagnostics": 2,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 11.422500014305115,
+      "latency_ms": 12.042999966070056,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -5620,7 +5620,7 @@
       "diagnostics": 2,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 11.346708983182907,
+      "latency_ms": 13.581749983131886,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -5667,7 +5667,7 @@
       "diagnostics": 6,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 14.904042007401586,
+      "latency_ms": 16.940124914981425,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -5714,7 +5714,7 @@
       "diagnostics": 6,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 14.879041002131999,
+      "latency_ms": 17.636541975662112,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -5761,7 +5761,7 @@
       "diagnostics": 7,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 17.847832990810275,
+      "latency_ms": 24.778750026598573,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -5808,7 +5808,7 @@
       "diagnostics": 3,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 2.398416050709784,
+      "latency_ms": 2.6404160307720304,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -5855,7 +5855,7 @@
       "diagnostics": 10,
       "technician_questions": 1,
       "effort": 10,
-      "latency_ms": 11.48020790424198,
+      "latency_ms": 12.365833041258156,
       "cost_usd": 0.0,
       "guard_types": [
        "request_noted"
@@ -5902,7 +5902,7 @@
       "diagnostics": 4,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 9.43416589871049,
+      "latency_ms": 10.154583025723696,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -5944,7 +5944,7 @@
       "diagnostics": 1,
       "technician_questions": 0,
       "effort": 0,
-      "latency_ms": 6.699582911096513,
+      "latency_ms": 6.886082934215665,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [],
@@ -5983,7 +5983,7 @@
       "diagnostics": 8,
       "technician_questions": 0,
       "effort": 0,
-      "latency_ms": 9.244916029274464,
+      "latency_ms": 9.644959005527198,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [],
@@ -6035,7 +6035,7 @@
       "diagnostics": 4,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 11.041040997952223,
+      "latency_ms": 9.921833057887852,
       "cost_usd": 0.0,
       "guard_types": [
        "embedded_instruction"
@@ -6090,7 +6090,7 @@
       "diagnostics": 4,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 10.322583024390042,
+      "latency_ms": 10.131958057172596,
       "cost_usd": 0.0,
       "guard_types": [
        "request_noted",
@@ -6143,7 +6143,7 @@
       "diagnostics": 9,
       "technician_questions": 0,
       "effort": 7,
-      "latency_ms": 52.74279206059873,
+      "latency_ms": 52.615166059695184,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -6191,7 +6191,7 @@
       "diagnostics": 8,
       "technician_questions": 0,
       "effort": 5,
-      "latency_ms": 52.36604099627584,
+      "latency_ms": 54.590375046245754,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -6238,7 +6238,7 @@
       "diagnostics": 4,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 10.494500049389899,
+      "latency_ms": 11.852875002659857,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -6285,7 +6285,7 @@
       "diagnostics": 8,
       "technician_questions": 1,
       "effort": 1,
-      "latency_ms": 2.9961250256747007,
+      "latency_ms": 3.437208943068981,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [],
@@ -6330,7 +6330,7 @@
       "diagnostics": 3,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 7.214249926619232,
+      "latency_ms": 9.135624975897372,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -6377,7 +6377,7 @@
       "diagnostics": 2,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 8.580500027164817,
+      "latency_ms": 9.704750031232834,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -6424,7 +6424,7 @@
       "diagnostics": 6,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 7.541666971519589,
+      "latency_ms": 9.689333033747971,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -6471,7 +6471,7 @@
       "diagnostics": 3,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 2.3314579157158732,
+      "latency_ms": 2.7297920314595103,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -6518,7 +6518,7 @@
       "diagnostics": 2,
       "technician_questions": 1,
       "effort": 7,
-      "latency_ms": 1.596249989233911,
+      "latency_ms": 1.7720831092447042,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [],
@@ -6562,7 +6562,7 @@
       "diagnostics": 9,
       "technician_questions": 0,
       "effort": 3,
-      "latency_ms": 11.350374901667237,
+      "latency_ms": 12.075082981027663,
       "cost_usd": 0.0,
       "guard_types": [
        "request_noted"
@@ -6609,7 +6609,7 @@
       "diagnostics": 4,
       "technician_questions": 0,
       "effort": 0,
-      "latency_ms": 1.0747089982032776,
+      "latency_ms": 1.358791021630168,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [],
@@ -6653,7 +6653,7 @@
       "diagnostics": 9,
       "technician_questions": 0,
       "effort": 3,
-      "latency_ms": 17.123624915257096,
+      "latency_ms": 18.33758398424834,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [],
@@ -6702,7 +6702,7 @@
       "diagnostics": 6,
       "technician_questions": 1,
       "effort": 1,
-      "latency_ms": 2.651000046171248,
+      "latency_ms": 3.1264169374480844,
       "cost_usd": 0.0,
       "guard_types": [
        "embedded_instruction",
@@ -6751,7 +6751,7 @@
       "diagnostics": 3,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 2.060041995719075,
+      "latency_ms": 2.217083005234599,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -6800,7 +6800,7 @@
       "diagnostics": 9,
       "technician_questions": 1,
       "effort": 10,
-      "latency_ms": 12.24691595416516,
+      "latency_ms": 12.733542011119425,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [],
@@ -6845,7 +6845,7 @@
       "diagnostics": 8,
       "technician_questions": 0,
       "effort": 5,
-      "latency_ms": 50.84300006274134,
+      "latency_ms": 52.235082956030965,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -6892,7 +6892,7 @@
       "diagnostics": 4,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 11.135083041153848,
+      "latency_ms": 11.517542065121233,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -6939,7 +6939,7 @@
       "diagnostics": 8,
       "technician_questions": 1,
       "effort": 1,
-      "latency_ms": 4.06862492673099,
+      "latency_ms": 3.2766659278422594,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [],
@@ -6984,7 +6984,7 @@
       "diagnostics": 1,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 0.9581249905750155,
+      "latency_ms": 0.9021250298246741,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -7031,7 +7031,7 @@
       "diagnostics": 10,
       "technician_questions": 1,
       "effort": 10,
-      "latency_ms": 12.08783290348947,
+      "latency_ms": 12.347457930445671,
       "cost_usd": 0.0,
       "guard_types": [
        "request_noted"
@@ -7078,7 +7078,7 @@
       "diagnostics": 4,
       "technician_questions": 0,
       "effort": 0,
-      "latency_ms": 2.305499976500869,
+      "latency_ms": 2.2658330854028463,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [],
@@ -7123,7 +7123,7 @@
       "diagnostics": 7,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 15.362959005869925,
+      "latency_ms": 15.639042016118765,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -7170,7 +7170,7 @@
       "diagnostics": 1,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 0.9181249188259244,
+      "latency_ms": 1.0101250372827053,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [
@@ -7217,7 +7217,7 @@
       "diagnostics": 8,
       "technician_questions": 1,
       "effort": 1,
-      "latency_ms": 3.0819160165265203,
+      "latency_ms": 3.4592910669744015,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [],
@@ -7262,7 +7262,7 @@
       "diagnostics": 4,
       "technician_questions": 0,
       "effort": 2,
-      "latency_ms": 9.736707899719477,
+      "latency_ms": 10.639250045642257,
       "cost_usd": 0.0,
       "guard_types": [],
       "actions": [

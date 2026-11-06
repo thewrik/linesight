@@ -57,15 +57,27 @@ export default function Landing() {
         </div>
       </section>
 
+      <section className="panel lenses-intro" aria-label="Three ways to read it">
+        <h2>One investigation, three lenses</h2>
+        <div className="grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 10 }}>
+          <div><b>Story</b><br /><span className="small muted">Walk through gates in plain language and watch possibilities close until one explanation is left.</span></div>
+          <div><b>Engineer</b><br /><span className="small muted">Rule ids, scores, evidence provenance and raw data at every gate, plus the full console.</span></div>
+          <div><b>Lead</b><br /><span className="small muted">Diverted cartons, technician minutes, line stops, and a ledger of each call and what it was chosen over.</span></div>
+        </div>
+      </section>
+
       <section className="demos" aria-label="Flagship demos">
         {DEMOS.map((d) => (
-          <a key={d.id} className="demo-card" href={`#/case/${d.id}`}>
+          <div key={d.id} className="demo-card">
             <span className="tag">{d.tag}</span>
             <h3>{d.title}</h3>
             <span className="small muted">{d.body}</span>
             <span className="outcome"><span className="chip plain">{d.outcome}</span></span>
-            <span className="btn primary" style={{ alignSelf: "flex-start" }}>Open investigation →</span>
-          </a>
+            <span className="row">
+              <a className="btn primary" href={`#/journey/${d.id}`} data-testid={`journey-${d.id}`}>Walk the journey →</a>
+              <a className="btn ghost" href={`#/case/${d.id}`}>Engineering console</a>
+            </span>
+          </div>
         ))}
       </section>
 

@@ -8,7 +8,26 @@
 
 "Offline" could mean five different things: discovery failed, control access failed, image transport failed, a trigger never arrived, or the dashboard is stale while acquisition is fine. LineSight is the first-line support engineer's tool for working out which one it is. It runs cheap read-only checks that tell causes apart and asks the technician for one observation at a time. It resolves routine faults through scoped playbooks and verifies the recovery before closing. When a fault needs engineering, it writes a cited handoff.
 
-![Landing](docs/screenshots/landing.png)
+## Walk the journey
+
+Each investigation is a trail of **gates**. Press and hold a gate (or press Enter) to run its check. As each one opens, the **decision tree** on the left closes the branches the evidence rules out, until one path is left. There is a fork where the candidate fixes are tested against the customer's requirements, a proof gate where fresh measurements must pass, and a verdict.
+
+The same journey reads three ways. You can switch lens at any gate:
+
+| Lens | For | What each gate shows |
+|---|---|---|
+| **Story** | anyone, including a non-technical reviewer | the question in plain words, what was found, and which possibilities closed |
+| **Engineer** | engineers | rule ids, scoring, evidence provenance and raw data, rule conditions, and a deep link into the full console at that step |
+| **Lead** | deployment and support leads | diverted cartons per hour, technician minutes, line-stop time, and a ledger of each call made and what it was chosen over |
+
+The design borrows from explorable explanations: R2D3's *Visual Introduction to Machine Learning* (data flowing down a decision tree), Nicky Case's explorables and Bartosz Ciechanowski's hands-on articles, and The Pudding's guided scrollytelling.
+
+![Journey, story lens](docs/screenshots/journey-story.png)
+![Fork: candidate fixes tested against the requirement](docs/screenshots/journey-fork.png)
+![Verdict, lead lens](docs/screenshots/journey-lead-verdict.png)
+![Escalation, engineer lens](docs/screenshots/journey-engineer-escalation.png)
+
+The **engineering console** (`#/case/<demo>`) is the dense view: topology with per-path status, candidate explanations, the diagnostic graph, the trace, and the exportable handoff.
 
 ## Three flagship demos
 
@@ -18,9 +37,14 @@
 | **B: "The replacement camera is visible but cannot connect."** | Discovery succeeds and control is refused. The compatibility matrix shows firmware 5.0.2 needs an adapter that isn't installed. There is no network troubleshooting loop. | Known playbook, verified in 4 checks (Demo A needs 7) |
 | **C: "It disconnects after an hour, but not reliably."** | All cameras answer heartbeats with access-denied after an idle gap following a host migration. Restarts help only temporarily. The documented crash-lock mechanism is ruled out. | Engineering escalation with a reproduction request |
 
+<details><summary>Console screenshots</summary>
+
+![Landing](docs/screenshots/landing.png)
 ![Demo A options](docs/screenshots/demo-a-options.png)
 ![Demo B topology](docs/screenshots/demo-b-topology.png)
 ![Demo C handoff](docs/screenshots/demo-c-handoff.png)
+
+</details>
 
 ## How it works
 
@@ -62,7 +86,7 @@ In a second terminal:
 ```bash
 npm --prefix frontend ci && npm --prefix frontend run dev
 ```
-Open http://localhost:5173. Without the API, the same UI runs as a **static replay** of recorded engine runs.
+Open http://localhost:5173 and pick **Walk the journey**. Without the API, the same UI runs as a **static replay** of recorded engine runs. The journey always plays the recorded run; the console runs live when the API is up.
 
 Docker (API and built UI on one port; the key is optional):
 
@@ -86,7 +110,8 @@ npm --prefix frontend run test:e2e
 
 * **GitHub Pages** hosts only the static replay build ([`.github/workflows/pages.yml`](.github/workflows/pages.yml), manual trigger). It cannot run the Python API.
 * **API** deployment is optional: the Dockerfile runs anywhere that runs a container. No secrets are bundled. Set `ANTHROPIC_API_KEY` on the server to enable live mode.
-* Nothing in this repository publishes or pushes anything by itself.
+* Nothing in this repository publishes or deploys anything by itself.
+* The Lead lens figures are illustrative. Cartons per hour = the simulated unusable-frame share × the required line rate, and minutes are 5 per synthetic effort or disruption unit. They are not measured savings.
 
 ## Measured results (synthetic)
 

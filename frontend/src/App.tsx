@@ -5,6 +5,7 @@ import CaseView from "./components/CaseView";
 import EvalView from "./components/EvalView";
 import SourcesView from "./components/SourcesView";
 import AboutView from "./components/AboutView";
+import Journey from "./journey/Journey";
 
 function useHash() {
   const [h, setH] = useState(window.location.hash || "#/");
@@ -36,7 +37,8 @@ export default function App() {
       </header>
       <main className="wrap">
         {page === "home" && <Landing />}
-        {page === "case" && api !== undefined && <CaseView key={route[1]} scenarioId={route[1]} api={api} />}
+        {page === "journey" && <Journey key={route[1]} scenarioId={route[1]} />}
+        {page === "case" && api !== undefined && <CaseView key={route[1]} scenarioId={route[1]} api={api} initialStep={route[2] ? Number(route[2]) : undefined} />}
         {page === "eval" && <EvalView />}
         {page === "sources" && <SourcesView />}
         {page === "about" && <AboutView />}

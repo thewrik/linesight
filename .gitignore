@@ -9,3 +9,4 @@ var/
 .env
 frontend/test-results/
 frontend/playwright-report/
+frontend/tsconfig.tsbuildinfo

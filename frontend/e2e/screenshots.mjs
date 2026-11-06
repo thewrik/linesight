@@ -44,6 +44,36 @@ await page.locator("section[aria-labelledby=dg-h]").screenshot({ path: out + "de
 await page.getByRole("tab", { name: "Engineering handoff" }).click();
 await page.getByTestId("outputs").screenshot({ path: out + "demo-c-handoff.png" });
 
+async function passGates(n) {
+  for (let i = 0; i < n; i++) {
+    const h = page.getByTestId("hold");
+    if (!(await h.count())) break;
+    await h.focus(); await page.keyboard.press("Enter"); await page.waitForTimeout(450);
+  }
+}
+await page.evaluate(() => localStorage.setItem("ls-lens", "story"));
+await page.goto(base + "/#/journey/demo-a-line-speed");
+await page.waitForTimeout(800);
+await passGates(4);
+await page.waitForTimeout(900);
+await page.screenshot({ path: out + "journey-story.png" });
+await page.getByTestId("lens-lead").click();
+await passGates(20);
+await page.waitForTimeout(900);
+await page.locator(".k-verdict").scrollIntoViewIfNeeded();
+await page.screenshot({ path: out + "journey-lead-verdict.png" });
+await page.locator(".k-choose").scrollIntoViewIfNeeded();
+await page.waitForTimeout(400);
+await page.locator(".k-choose .gate-card").screenshot({ path: out + "journey-fork.png" });
+await page.getByTestId("lens-engineer").click();
+await page.goto(base + "/#/journey/demo-c-heartbeat");
+await page.waitForTimeout(600);
+await page.getByTestId("open-all").click();
+await page.waitForTimeout(1200);
+await page.locator(".k-verdict").scrollIntoViewIfNeeded();
+await page.screenshot({ path: out + "journey-engineer-escalation.png" });
+await page.evaluate(() => localStorage.setItem("ls-lens", "story"));
+
 await page.goto(base + "/#/eval");
 await page.waitForTimeout(600);
 await page.screenshot({ path: out + "evaluation.png", fullPage: false });
