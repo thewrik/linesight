@@ -1,0 +1,20 @@
+[project]
+name = "linesight"
+version = "0.1.0"
+description = "Evidence-led triage of industrial machine-vision incidents (synthetic portfolio project)"
+requires-python = ">=3.10"
+dependencies = ["fastapi>=0.110", "uvicorn>=0.27", "pydantic>=2.6", "pyyaml>=6.0"]
+
+[project.optional-dependencies]
+live = ["anthropic>=0.80"]
+dev = ["pytest>=8", "httpx>=0.27"]
+
+[tool.setuptools.packages.find]
+where = ["backend"]
+
+[tool.setuptools.package-data]
+linesight = ["rules/*.yaml", "casebook/*.yaml", "llm/*.jsonl"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["backend"]

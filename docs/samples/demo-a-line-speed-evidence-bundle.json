@@ -1,0 +1,2821 @@
+{
+ "case": {
+  "case_id": "CASE-demo-a-line-speed-1101",
+  "scenario_id": "demo-a-line-speed",
+  "mode": "replay",
+  "rules_version": "2026.11.3",
+  "incident": {
+   "id": "INC-demo-a-line-speed",
+   "station_id": "plant-a-line3",
+   "reported_at": "2026-11-09T06:40:00",
+   "reporter": "Line 3 operator (ticket), relayed by maintenance technician",
+   "ticket_text": "Camera 3 keeps going offline. We restarted it twice. Can you send a replacement?\nTechnician note: at low speed the line looks fine. At full speed images go missing and cartons get diverted to manual inspection.",
+   "business_impact": "Line 3 diverting cartons to manual inspection at production speed; two operators re-checking labels.",
+   "prior_temporary_recoveries": 0,
+   "changes_reported": [],
+   "timeline": [
+    {
+     "t": "2026-11-07T09:10:00",
+     "what": "Maintenance replaced edge PC (EH-200 \u2192 EH-310); inspection profile imported from installer defaults"
+    },
+    {
+     "t": "2026-11-07T13:40:00",
+     "what": "Maintenance replaced PoE switch (NP-8G \u2192 NP-8L)"
+    },
+    {
+     "t": "2026-11-07T16:00:00",
+     "what": "Low-speed test run (4 cartons/s): no diversions"
+    },
+    {
+     "t": "2026-11-09T06:05:00",
+     "what": "Production start at 10 cartons/s"
+    },
+    {
+     "t": "2026-11-09T06:12:00",
+     "what": "First diversions for missing images"
+    },
+    {
+     "t": "2026-11-09T06:20:00",
+     "what": "Operator restarted Camera 3 (no change)"
+    },
+    {
+     "t": "2026-11-09T06:31:00",
+     "what": "Operator restarted Camera 3 again (no change)"
+    }
+   ]
+  },
+  "station": {
+   "id": "plant-a-line3",
+   "site": "Fictional contract packager, Plant A",
+   "line": "Line 3 \u2014 carton labelling",
+   "template": "LS-4 label & batch-code inspection",
+   "devices": [
+    {
+     "id": "cam1",
+     "kind": "camera",
+     "label": "Camera 1",
+     "vendor": "Corvid Imaging",
+     "model": "Vireo GV-16M",
+     "firmware": "4.3.2",
+     "role": "Front label",
+     "attrs": {
+      "ip": "192.168.10.11",
+      "switch_port": 1,
+      "poe_class": 3
+     }
+    },
+    {
+     "id": "cam2",
+     "kind": "camera",
+     "label": "Camera 2",
+     "vendor": "Corvid Imaging",
+     "model": "Vireo GV-16M",
+     "firmware": "4.3.2",
+     "role": "Back label",
+     "attrs": {
+      "ip": "192.168.10.12",
+      "switch_port": 2,
+      "poe_class": 3
+     }
+    },
+    {
+     "id": "cam3",
+     "kind": "camera",
+     "label": "Camera 3",
+     "vendor": "Corvid Imaging",
+     "model": "Vireo GV-16M",
+     "firmware": "4.3.2",
+     "role": "Batch code (top)",
+     "attrs": {
+      "ip": "192.168.10.13",
+      "switch_port": 3,
+      "poe_class": 3
+     }
+    },
+    {
+     "id": "cam4",
+     "kind": "camera",
+     "label": "Camera 4",
+     "vendor": "Corvid Imaging",
+     "model": "Vireo GV-16M",
+     "firmware": "4.3.2",
+     "role": "Batch code (side)",
+     "attrs": {
+      "ip": "192.168.10.14",
+      "switch_port": 4,
+      "poe_class": 3
+     }
+    },
+    {
+     "id": "sw1",
+     "kind": "switch",
+     "label": "PoE switch",
+     "vendor": "NetPier",
+     "model": "NP-8L managed PoE",
+     "firmware": "1.4.0",
+     "role": null,
+     "attrs": {
+      "ports": 8,
+      "buffer_kb": 448,
+      "poe_budget_w": 65
+     }
+    },
+    {
+     "id": "host",
+     "kind": "edge_host",
+     "label": "Edge host",
+     "vendor": "Meridian",
+     "model": "EH-310",
+     "firmware": null,
+     "role": null,
+     "attrs": {
+      "os": "Windows 11 IoT LTSC",
+      "nic": "4-port PCIe GigE"
+     }
+    },
+    {
+     "id": "plc",
+     "kind": "plc",
+     "label": "Line PLC",
+     "vendor": "Generic",
+     "model": "Line controller",
+     "firmware": null,
+     "role": null,
+     "attrs": {
+      "trigger": "24 V hardware trigger per camera",
+      "result_link": "Modbus/TCP result registers (simplified)"
+     }
+    },
+    {
+     "id": "mgmt",
+     "kind": "mgmt_service",
+     "label": "Plant dashboard",
+     "vendor": "Plant IT",
+     "model": "Station management broker",
+     "firmware": null,
+     "role": null,
+     "attrs": {
+      "protocol": "MQTT over TLS :8883"
+     }
+    }
+   ],
+   "connections": [
+    {
+     "id": "cam1-disc",
+     "a": "host",
+     "b": "cam1",
+     "path": "discovery",
+     "protocol": "GVCP discovery (UDP 3956 broadcast)",
+     "notes": ""
+    },
+    {
+     "id": "cam1-ctrl",
+     "a": "host",
+     "b": "cam1",
+     "path": "control",
+     "protocol": "GVCP control channel + heartbeat",
+     "notes": ""
+    },
+    {
+     "id": "cam1-strm",
+     "a": "cam1",
+     "b": "host",
+     "path": "stream",
+     "protocol": "GVSP image stream (UDP)",
+     "notes": ""
+    },
+    {
+     "id": "cam1-trig",
+     "a": "plc",
+     "b": "cam1",
+     "path": "trigger",
+     "protocol": "24 V hardware trigger",
+     "notes": ""
+    },
+    {
+     "id": "cam1-poe",
+     "a": "sw1",
+     "b": "cam1",
+     "path": "power",
+     "protocol": "PoE 802.3af",
+     "notes": ""
+    },
+    {
+     "id": "cam2-disc",
+     "a": "host",
+     "b": "cam2",
+     "path": "discovery",
+     "protocol": "GVCP discovery (UDP 3956 broadcast)",
+     "notes": ""
+    },
+    {
+     "id": "cam2-ctrl",
+     "a": "host",
+     "b": "cam2",
+     "path": "control",
+     "protocol": "GVCP control channel + heartbeat",
+     "notes": ""
+    },
+    {
+     "id": "cam2-strm",
+     "a": "cam2",
+     "b": "host",
+     "path": "stream",
+     "protocol": "GVSP image stream (UDP)",
+     "notes": ""
+    },
+    {
+     "id": "cam2-trig",
+     "a": "plc",
+     "b": "cam2",
+     "path": "trigger",
+     "protocol": "24 V hardware trigger",
+     "notes": ""
+    },
+    {
+     "id": "cam2-poe",
+     "a": "sw1",
+     "b": "cam2",
+     "path": "power",
+     "protocol": "PoE 802.3af",
+     "notes": ""
+    },
+    {
+     "id": "cam3-disc",
+     "a": "host",
+     "b": "cam3",
+     "path": "discovery",
+     "protocol": "GVCP discovery (UDP 3956 broadcast)",
+     "notes": ""
+    },
+    {
+     "id": "cam3-ctrl",
+     "a": "host",
+     "b": "cam3",
+     "path": "control",
+     "protocol": "GVCP control channel + heartbeat",
+     "notes": ""
+    },
+    {
+     "id": "cam3-strm",
+     "a": "cam3",
+     "b": "host",
+     "path": "stream",
+     "protocol": "GVSP image stream (UDP)",
+     "notes": ""
+    },
+    {
+     "id": "cam3-trig",
+     "a": "plc",
+     "b": "cam3",
+     "path": "trigger",
+     "protocol": "24 V hardware trigger",
+     "notes": ""
+    },
+    {
+     "id": "cam3-poe",
+     "a": "sw1",
+     "b": "cam3",
+     "path": "power",
+     "protocol": "PoE 802.3af",
+     "notes": ""
+    },
+    {
+     "id": "cam4-disc",
+     "a": "host",
+     "b": "cam4",
+     "path": "discovery",
+     "protocol": "GVCP discovery (UDP 3956 broadcast)",
+     "notes": ""
+    },
+    {
+     "id": "cam4-ctrl",
+     "a": "host",
+     "b": "cam4",
+     "path": "control",
+     "protocol": "GVCP control channel + heartbeat",
+     "notes": ""
+    },
+    {
+     "id": "cam4-strm",
+     "a": "cam4",
+     "b": "host",
+     "path": "stream",
+     "protocol": "GVSP image stream (UDP)",
+     "notes": ""
+    },
+    {
+     "id": "cam4-trig",
+     "a": "plc",
+     "b": "cam4",
+     "path": "trigger",
+     "protocol": "24 V hardware trigger",
+     "notes": ""
+    },
+    {
+     "id": "cam4-poe",
+     "a": "sw1",
+     "b": "cam4",
+     "path": "power",
+     "protocol": "PoE 802.3af",
+     "notes": ""
+    },
+    {
+     "id": "host-plc",
+     "a": "host",
+     "b": "plc",
+     "path": "trigger",
+     "protocol": "Result handshake (Modbus/TCP, simplified)",
+     "notes": ""
+    },
+    {
+     "id": "host-mgmt",
+     "a": "host",
+     "b": "mgmt",
+     "path": "management",
+     "protocol": "MQTT over TLS (client certificate)",
+     "notes": ""
+    }
+   ],
+   "versions": {
+    "host_os": "Windows 11 IoT LTSC 24H2",
+    "acquisition_sdk": "Kestrel Acquisition SDK 3.2.0",
+    "inspection_app": "Meridian Inspect 6.4.1",
+    "adapters_installed": [
+     "vireo-adapter-4.3"
+    ],
+    "nic_driver": "igb 13.0",
+    "camera_firmware": {
+     "cam1": "4.3.2",
+     "cam2": "4.3.2",
+     "cam3": "4.3.2",
+     "cam4": "4.3.2"
+    },
+    "plc_program": "L3-PKG r27",
+    "mgmt_agent": "station-agent 2.1"
+   },
+   "requirements": {
+    "line_rate_cps": 10.0,
+    "low_speed_cps": 4.0,
+    "result_deadline_ms": 75.0,
+    "usable_frame_pct_min": 99.5
+   }
+  },
+  "evidence": [
+   {
+    "id": "E-001",
+    "key": "ticket.symptom.offline",
+    "kind": "customer_assertion",
+    "status": "ok",
+    "summary": "Reported: Camera 'offline' (ambiguous)",
+    "data": {
+     "group": "offline"
+    },
+    "provenance": "ticket (Line 3 operator (ticket), relayed by maintenance technician) via replay of a HAND-AUTHORED fixture (not model output)",
+    "captured_at": "2026-11-09T06:40:00",
+    "received_seq": 3,
+    "scope": {
+     "site": "Fictional contract packager, Plant A",
+     "station": "plant-a-line3"
+    },
+    "parser_version": "replay:TicketStructure-v1",
+    "untrusted_text": true
+   },
+   {
+    "id": "E-002",
+    "key": "ticket.symptom.missing_images",
+    "kind": "customer_assertion",
+    "status": "ok",
+    "summary": "Reported: Images missing / cartons diverted",
+    "data": {
+     "group": "missing_images"
+    },
+    "provenance": "ticket (Line 3 operator (ticket), relayed by maintenance technician) via replay of a HAND-AUTHORED fixture (not model output)",
+    "captured_at": "2026-11-09T06:40:00",
+    "received_seq": 4,
+    "scope": {
+     "site": "Fictional contract packager, Plant A",
+     "station": "plant-a-line3"
+    },
+    "parser_version": "replay:TicketStructure-v1",
+    "untrusted_text": true
+   },
+   {
+    "id": "E-003",
+    "key": "ticket.claim.replacement_needed",
+    "kind": "customer_assertion",
+    "status": "ok",
+    "summary": "Customer says: send a replacement for Camera 3",
+    "data": {
+     "claim": "replacement_needed",
+     "device": "cam3",
+     "text": "send a replacement for Camera 3"
+    },
+    "provenance": "ticket (Line 3 operator (ticket), relayed by maintenance technician)",
+    "captured_at": "2026-11-09T06:40:00",
+    "received_seq": 5,
+    "scope": {
+     "site": "Fictional contract packager, Plant A",
+     "station": "plant-a-line3",
+     "device": "cam3"
+    },
+    "parser_version": "replay:TicketStructure-v1",
+    "untrusted_text": true
+   },
+   {
+    "id": "E-004",
+    "key": "ticket.claim.works_at_low_speed",
+    "kind": "customer_assertion",
+    "status": "ok",
+    "summary": "Customer says: line looks fine at low speed",
+    "data": {
+     "claim": "works_at_low_speed",
+     "device": null,
+     "text": "line looks fine at low speed"
+    },
+    "provenance": "ticket (Line 3 operator (ticket), relayed by maintenance technician)",
+    "captured_at": "2026-11-09T06:40:00",
+    "received_seq": 6,
+    "scope": {
+     "site": "Fictional contract packager, Plant A",
+     "station": "plant-a-line3"
+    },
+    "parser_version": "replay:TicketStructure-v1",
+    "untrusted_text": true
+   },
+   {
+    "id": "E-005",
+    "key": "stream.production",
+    "kind": "observed",
+    "status": "ok",
+    "summary": "64.33% usable at 10.0 cartons/s; late 35.67%, incomplete 0.0%, resend requests 9012; errors {'TOO_MANY_CONSECUTIVE_RESENDS': 128, 'AUTO_ABORTED': 85}",
+    "data": {
+     "mode": "production",
+     "line_rate_cps": 10.0,
+     "required_rate_cps": 10.0,
+     "assumptions": [
+      "Each camera link and the host uplink are 1000 Mb/s full duplex.",
+      "Per-packet overhead on the wire: 20 B IP + 8 B UDP + 8 B GVSP header inside the packet, plus 14 B Ethernet header + 4 B FCS + 8 B preamble + 12 B inter-frame gap outside it.",
+      "A camera's throughput limit is enforced by an inter-packet delay; the camera then sends at a constant rate for the whole frame.",
+      "All cameras share one switch egress port toward the host with a fixed buffer; overflow bytes are dropped.",
+      "The host requests resends after a packet timeout. Each resend round costs the timeout plus the time to retransmit the missing bytes; a round recovers a fixed share of what is missing.",
+      "A frame is usable only if it completes and the inspection result reaches the PLC before the reject-gate deadline. The deadline is the gate travel time minus actuator margin.",
+      "Trigger-to-transmit start jitter per camera is uniform in +/- jitter_ms.",
+      "Other ports share the switch packet memory: at each burst a random share of the egress buffer (uniform 0..background_occupancy_max) is already occupied. This is a confounder that makes loss intermittent; it is a stand-in, not a measured property of any switch.",
+      "Average bandwidth is reported separately from burst behaviour: a link can be well under capacity on average and still overflow during synchronous bursts."
+     ],
+     "usable_frame_pct": 64.33,
+     "incomplete_frame_pct": 0.0,
+     "late_frame_pct": 35.67,
+     "avg_uplink_utilisation_pct": 52.3,
+     "deadline_ms": 75.0,
+     "per_camera": {
+      "cam1": {
+       "frames": 600,
+       "incomplete": 0,
+       "late": 45,
+       "packets": 637800,
+       "resend_requests": 2253,
+       "lost_packets": 0,
+       "latency_ms_p95": 87.2,
+       "error": null
+      },
+      "cam2": {
+       "frames": 600,
+       "incomplete": 0,
+       "late": 59,
+       "packets": 637800,
+       "resend_requests": 2253,
+       "lost_packets": 0,
+       "latency_ms_p95": 87.2,
+       "error": null
+      },
+      "cam3": {
+       "frames": 600,
+       "incomplete": 0,
+       "late": 48,
+       "packets": 637800,
+       "resend_requests": 2253,
+       "lost_packets": 0,
+       "latency_ms_p95": 87.1,
+       "error": null
+      },
+      "cam4": {
+       "frames": 600,
+       "incomplete": 0,
+       "late": 62,
+       "packets": 637800,
+       "resend_requests": 2253,
+       "lost_packets": 0,
+       "latency_ms_p95": 87.1,
+       "error": null
+      }
+     },
+     "errors": {
+      "TOO_MANY_CONSECUTIVE_RESENDS": 128,
+      "AUTO_ABORTED": 85
+     },
+     "budget": {
+      "payload_bytes_per_frame": 1555200,
+      "packets_per_frame": 1063,
+      "wire_bytes_per_frame": 1634894,
+      "per_camera_send_rate_mbps": 265.0,
+      "frame_tx_ms": 49.36,
+      "average_uplink_mbps": 523.2,
+      "burst_arrival_mbps": 1060.0,
+      "uplink_mbps": 1000.0,
+      "excess_during_full_overlap_kb": 361.5,
+      "switch_buffer_kb": 448,
+      "best_case_last_result_ms": 62.9,
+      "deadline_ms": 75.0,
+      "max_rate_cps_by_tx_time": 19.7
+     },
+     "resend_requests_total": 9012,
+     "app_drop_pct": 0.0,
+     "achieved_rate_cps": 10.0,
+     "triggers": 600
+    },
+    "provenance": "tool:inspect_acquisition_stats on plant-a-line3 (simulator sim-1.3)",
+    "captured_at": "2026-11-09T06:39:12",
+    "received_seq": 7,
+    "scope": {
+     "site": "Fictional contract packager, Plant A",
+     "station": "plant-a-line3"
+    },
+    "parser_version": "facts-1.2",
+    "untrusted_text": false
+   },
+   {
+    "id": "E-006",
+    "key": "topology",
+    "kind": "observed",
+    "status": "ok",
+    "summary": "uplink egress drops 9560/min; buffer 448 KB; CRC none; PoE 19.2/65 W",
+    "data": {
+     "links": {
+      "cam1": {
+       "switch_port": 1,
+       "speed_mbps": 1000,
+       "crc_errors_per_min": 0.0,
+       "link_flaps_24h": 0,
+       "poe_w": 4.8,
+       "uptime_h": 52.0,
+       "reboots_24h": 0
+      },
+      "cam2": {
+       "switch_port": 2,
+       "speed_mbps": 1000,
+       "crc_errors_per_min": 0.0,
+       "link_flaps_24h": 0,
+       "poe_w": 4.8,
+       "uptime_h": 52.0,
+       "reboots_24h": 0
+      },
+      "cam3": {
+       "switch_port": 3,
+       "speed_mbps": 1000,
+       "crc_errors_per_min": 0.0,
+       "link_flaps_24h": 0,
+       "poe_w": 4.8,
+       "uptime_h": 52.0,
+       "reboots_24h": 0
+      },
+      "cam4": {
+       "switch_port": 4,
+       "speed_mbps": 1000,
+       "crc_errors_per_min": 0.0,
+       "link_flaps_24h": 0,
+       "poe_w": 4.8,
+       "uptime_h": 52.0,
+       "reboots_24h": 0
+      }
+     },
+     "switch": {
+      "model": "NP-8L managed PoE",
+      "buffer_kb": 448,
+      "uplink_port": 8,
+      "uplink_egress_drops_per_min": 9560,
+      "poe": {
+       "draw_w": 19.2,
+       "budget_w": 65,
+       "over_budget": false
+      },
+      "poe_denied_events_24h": 0
+     },
+     "host_nic": {
+      "jumbo_frames": false,
+      "rx_descriptors": 512
+     }
+    },
+    "provenance": "tool:inspect_topology on plant-a-line3 (simulator sim-1.3)",
+    "captured_at": "2026-11-09T06:38:00",
+    "received_seq": 9,
+    "scope": {
+     "site": "Fictional contract packager, Plant A",
+     "station": "plant-a-line3"
+    },
+    "parser_version": "facts-1.2",
+    "untrusted_text": false
+   },
+   {
+    "id": "E-007",
+    "key": "control",
+    "kind": "observed",
+    "status": "ok",
+    "summary": "cam1: ok; cam2: ok; cam3: ok; cam4: ok",
+    "data": {
+     "results": {
+      "cam1": {
+       "result": "ok",
+       "detail": "control channel opened, heartbeat 3000 ms"
+      },
+      "cam2": {
+       "result": "ok",
+       "detail": "control channel opened, heartbeat 3000 ms"
+      },
+      "cam3": {
+       "result": "ok",
+       "detail": "control channel opened, heartbeat 3000 ms"
+      },
+      "cam4": {
+       "result": "ok",
+       "detail": "control channel opened, heartbeat 3000 ms"
+      }
+     },
+     "note": "Opens and immediately releases a control channel; read-only."
+    },
+    "provenance": "tool:control_probe on plant-a-line3 (simulator sim-1.3)",
+    "captured_at": "2026-11-09T06:39:06",
+    "received_seq": 11,
+    "scope": {
+     "site": "Fictional contract packager, Plant A",
+     "station": "plant-a-line3"
+    },
+    "parser_version": "facts-1.2",
+    "untrusted_text": false
+   },
+   {
+    "id": "E-008",
+    "key": "stream.low",
+    "kind": "observed",
+    "status": "ok",
+    "summary": "100.0% usable at 4.0 cartons/s; late 0.0%, incomplete 0.0%, resend requests 10160",
+    "data": {
+     "mode": "low",
+     "line_rate_cps": 4.0,
+     "required_rate_cps": 10.0,
+     "assumptions": [
+      "Each camera link and the host uplink are 1000 Mb/s full duplex.",
+      "Per-packet overhead on the wire: 20 B IP + 8 B UDP + 8 B GVSP header inside the packet, plus 14 B Ethernet header + 4 B FCS + 8 B preamble + 12 B inter-frame gap outside it.",
+      "A camera's throughput limit is enforced by an inter-packet delay; the camera then sends at a constant rate for the whole frame.",
+      "All cameras share one switch egress port toward the host with a fixed buffer; overflow bytes are dropped.",
+      "The host requests resends after a packet timeout. Each resend round costs the timeout plus the time to retransmit the missing bytes; a round recovers a fixed share of what is missing.",
+      "A frame is usable only if it completes and the inspection result reaches the PLC before the reject-gate deadline. The deadline is the gate travel time minus actuator margin.",
+      "Trigger-to-transmit start jitter per camera is uniform in +/- jitter_ms.",
+      "Other ports share the switch packet memory: at each burst a random share of the egress buffer (uniform 0..background_occupancy_max) is already occupied. This is a confounder that makes loss intermittent; it is a stand-in, not a measured property of any switch.",
+      "Average bandwidth is reported separately from burst behaviour: a link can be well under capacity on average and still overflow during synchronous bursts."
+     ],
+     "usable_frame_pct": 100.0,
+     "incomplete_frame_pct": 0.0,
+     "late_frame_pct": 0.0,
+     "avg_uplink_utilisation_pct": 20.9,
+     "deadline_ms": 225.0,
+     "per_camera": {
+      "cam1": {
+       "frames": 600,
+       "incomplete": 0,
+       "late": 0,
+       "packets": 637800,
+       "resend_requests": 2540,
+       "lost_packets": 0,
+       "latency_ms_p95": 87.3,
+       "error": null
+      },
+      "cam2": {
+       "frames": 600,
+       "incomplete": 0,
+       "late": 0,
+       "packets": 637800,
+       "resend_requests": 2540,
+       "lost_packets": 0,
+       "latency_ms_p95": 87.2,
+       "error": null
+      },
+      "cam3": {
+       "frames": 600,
+       "incomplete": 0,
+       "late": 0,
+       "packets": 637800,
+       "resend_requests": 2540,
+       "lost_packets": 0,
+       "latency_ms_p95": 87.3,
+       "error": null
+      },
+      "cam4": {
+       "frames": 600,
+       "incomplete": 0,
+       "late": 0,
+       "packets": 637800,
+       "resend_requests": 2540,
+       "lost_packets": 0,
+       "latency_ms_p95": 87.1,
+       "error": null
+      }
+     },
+     "errors": {},
+     "budget": {
+      "payload_bytes_per_frame": 1555200,
+      "packets_per_frame": 1063,
+      "wire_bytes_per_frame": 1634894,
+      "per_camera_send_rate_mbps": 265.0,
+      "frame_tx_ms": 49.36,
+      "average_uplink_mbps": 209.3,
+      "burst_arrival_mbps": 1060.0,
+      "uplink_mbps": 1000.0,
+      "excess_during_full_overlap_kb": 361.5,
+      "switch_buffer_kb": 448,
+      "best_case_last_result_ms": 62.9,
+      "deadline_ms": 225.0,
+      "max_rate_cps_by_tx_time": 19.7
+     },
+     "resend_requests_total": 10160,
+     "app_drop_pct": 0.0,
+     "achieved_rate_cps": 4.0,
+     "triggers": 600
+    },
+    "provenance": "tool:inspect_acquisition_stats on plant-a-line3 (simulator sim-1.3)",
+    "captured_at": "2026-11-09T06:39:30",
+    "received_seq": 13,
+    "scope": {
+     "site": "Fictional contract packager, Plant A",
+     "station": "plant-a-line3"
+    },
+    "parser_version": "facts-1.2",
+    "untrusted_text": false
+   },
+   {
+    "id": "E-009",
+    "key": "plc",
+    "kind": "observed",
+    "status": "ok",
+    "summary": "triggers reach all cameras",
+    "data": {
+     "per_camera": {
+      "cam1": {
+       "triggers_sent": 600,
+       "frames_started": 600,
+       "result_timeouts": 0
+      },
+      "cam2": {
+       "triggers_sent": 600,
+       "frames_started": 600,
+       "result_timeouts": 0
+      },
+      "cam3": {
+       "triggers_sent": 600,
+       "frames_started": 600,
+       "result_timeouts": 0
+      },
+      "cam4": {
+       "triggers_sent": 600,
+       "frames_started": 600,
+       "result_timeouts": 0
+      }
+     },
+     "result_link": "ok",
+     "window": "last 60 s of production"
+    },
+    "provenance": "tool:inspect_plc_link on plant-a-line3 (simulator sim-1.3)",
+    "captured_at": "2026-11-09T06:38:06",
+    "received_seq": 15,
+    "scope": {
+     "site": "Fictional contract packager, Plant A",
+     "station": "plant-a-line3"
+    },
+    "parser_version": "facts-1.2",
+    "untrusted_text": false
+   },
+   {
+    "id": "E-010",
+    "key": "host",
+    "kind": "observed",
+    "status": "ok",
+    "summary": "Windows 11 IoT LTSC 24H2, Kestrel Acquisition SDK 3.2.0, CPU p95 34%, image pool 64",
+    "data": {
+     "os": "Windows 11 IoT LTSC 24H2",
+     "sdk": "Kestrel Acquisition SDK 3.2.0",
+     "cpu_pct_p95": 34,
+     "buffer_pool_frames": 64,
+     "debug_image_archive": false,
+     "debug_heartbeat_extension": false,
+     "processing_ms_p95": 12.0,
+     "permission_errors": [],
+     "locale_decimal_separator": ".",
+     "migrated_from": null,
+     "nic": {
+      "jumbo_frames": false,
+      "rx_descriptors": 512
+     },
+     "power_plan": "Balanced",
+     "linux": false
+    },
+    "provenance": "tool:inspect_host on plant-a-line3 (simulator sim-1.3)",
+    "captured_at": "2026-11-09T06:38:42",
+    "received_seq": 17,
+    "scope": {
+     "site": "Fictional contract packager, Plant A",
+     "station": "plant-a-line3"
+    },
+    "parser_version": "facts-1.2",
+    "untrusted_text": false
+   },
+   {
+    "id": "E-011",
+    "key": "stream.single",
+    "kind": "observed",
+    "status": "ok",
+    "summary": "alone: cam1 100.0%, cam2 100.0%, cam3 100.0%, cam4 100.0%",
+    "data": {
+     "mode": "single",
+     "line_rate_cps": 10.0,
+     "required_rate_cps": 10.0,
+     "assumptions": [
+      "Each camera link and the host uplink are 1000 Mb/s full duplex.",
+      "Per-packet overhead on the wire: 20 B IP + 8 B UDP + 8 B GVSP header inside the packet, plus 14 B Ethernet header + 4 B FCS + 8 B preamble + 12 B inter-frame gap outside it.",
+      "A camera's throughput limit is enforced by an inter-packet delay; the camera then sends at a constant rate for the whole frame.",
+      "All cameras share one switch egress port toward the host with a fixed buffer; overflow bytes are dropped.",
+      "The host requests resends after a packet timeout. Each resend round costs the timeout plus the time to retransmit the missing bytes; a round recovers a fixed share of what is missing.",
+      "A frame is usable only if it completes and the inspection result reaches the PLC before the reject-gate deadline. The deadline is the gate travel time minus actuator margin.",
+      "Trigger-to-transmit start jitter per camera is uniform in +/- jitter_ms.",
+      "Other ports share the switch packet memory: at each burst a random share of the egress buffer (uniform 0..background_occupancy_max) is already occupied. This is a confounder that makes loss intermittent; it is a stand-in, not a measured property of any switch.",
+      "Average bandwidth is reported separately from burst behaviour: a link can be well under capacity on average and still overflow during synchronous bursts."
+     ],
+     "per_camera": {
+      "cam1": {
+       "usable_frame_pct": 100.0,
+       "latency_ms_p95": 63.2,
+       "resend_requests": 0,
+       "error": null
+      },
+      "cam2": {
+       "usable_frame_pct": 100.0,
+       "latency_ms_p95": 63.2,
+       "resend_requests": 0,
+       "error": null
+      },
+      "cam3": {
+       "usable_frame_pct": 100.0,
+       "latency_ms_p95": 63.2,
+       "resend_requests": 0,
+       "error": null
+      },
+      "cam4": {
+       "usable_frame_pct": 100.0,
+       "latency_ms_p95": 63.2,
+       "resend_requests": 0,
+       "error": null
+      }
+     },
+     "note": "Each camera acquired alone at production trigger rate during a test window."
+    },
+    "provenance": "tool:inspect_acquisition_stats on plant-a-line3 (simulator sim-1.3)",
+    "captured_at": "2026-11-09T06:39:30",
+    "received_seq": 19,
+    "scope": {
+     "site": "Fictional contract packager, Plant A",
+     "station": "plant-a-line3"
+    },
+    "parser_version": "facts-1.2",
+    "untrusted_text": false
+   },
+   {
+    "id": "E-012",
+    "key": "stream.production",
+    "kind": "verification",
+    "status": "ok",
+    "summary": "after I-1: 100.0% usable at 10.0 cartons/s; late 0.0%, incomplete 0.0%, resend requests 0",
+    "data": {
+     "mode": "production",
+     "line_rate_cps": 10.0,
+     "required_rate_cps": 10.0,
+     "assumptions": [
+      "Each camera link and the host uplink are 1000 Mb/s full duplex.",
+      "Per-packet overhead on the wire: 20 B IP + 8 B UDP + 8 B GVSP header inside the packet, plus 14 B Ethernet header + 4 B FCS + 8 B preamble + 12 B inter-frame gap outside it.",
+      "A camera's throughput limit is enforced by an inter-packet delay; the camera then sends at a constant rate for the whole frame.",
+      "All cameras share one switch egress port toward the host with a fixed buffer; overflow bytes are dropped.",
+      "The host requests resends after a packet timeout. Each resend round costs the timeout plus the time to retransmit the missing bytes; a round recovers a fixed share of what is missing.",
+      "A frame is usable only if it completes and the inspection result reaches the PLC before the reject-gate deadline. The deadline is the gate travel time minus actuator margin.",
+      "Trigger-to-transmit start jitter per camera is uniform in +/- jitter_ms.",
+      "Other ports share the switch packet memory: at each burst a random share of the egress buffer (uniform 0..background_occupancy_max) is already occupied. This is a confounder that makes loss intermittent; it is a stand-in, not a measured property of any switch.",
+      "Average bandwidth is reported separately from burst behaviour: a link can be well under capacity on average and still overflow during synchronous bursts."
+     ],
+     "usable_frame_pct": 100.0,
+     "incomplete_frame_pct": 0.0,
+     "late_frame_pct": 0.0,
+     "avg_uplink_utilisation_pct": 52.3,
+     "deadline_ms": 75.0,
+     "per_camera": {
+      "cam1": {
+       "frames": 600,
+       "incomplete": 0,
+       "late": 0,
+       "packets": 637800,
+       "resend_requests": 0,
+       "lost_packets": 0,
+       "latency_ms_p95": 67.2,
+       "error": null
+      },
+      "cam2": {
+       "frames": 600,
+       "incomplete": 0,
+       "late": 0,
+       "packets": 637800,
+       "resend_requests": 0,
+       "lost_packets": 0,
+       "latency_ms_p95": 67.2,
+       "error": null
+      },
+      "cam3": {
+       "frames": 600,
+       "incomplete": 0,
+       "late": 0,
+       "packets": 637800,
+       "resend_requests": 0,
+       "lost_packets": 0,
+       "latency_ms_p95": 67.2,
+       "error": null
+      },
+      "cam4": {
+       "frames": 600,
+       "incomplete": 0,
+       "late": 0,
+       "packets": 637800,
+       "resend_requests": 0,
+       "lost_packets": 0,
+       "latency_ms_p95": 67.2,
+       "error": null
+      }
+     },
+     "errors": {},
+     "budget": {
+      "payload_bytes_per_frame": 1555200,
+      "packets_per_frame": 1063,
+      "wire_bytes_per_frame": 1634894,
+      "per_camera_send_rate_mbps": 245.0,
+      "frame_tx_ms": 53.38,
+      "average_uplink_mbps": 523.2,
+      "burst_arrival_mbps": 980.0,
+      "uplink_mbps": 1000.0,
+      "excess_during_full_overlap_kb": 0.0,
+      "switch_buffer_kb": 448,
+      "best_case_last_result_ms": 66.9,
+      "deadline_ms": 75.0,
+      "max_rate_cps_by_tx_time": 18.2
+     },
+     "resend_requests_total": 0,
+     "app_drop_pct": 0.0,
+     "achieved_rate_cps": 10.0,
+     "triggers": 600
+    },
+    "provenance": "verification:inspect_acquisition_stats",
+    "captured_at": "2026-11-09T06:38:06",
+    "received_seq": 24,
+    "scope": {
+     "site": "Fictional contract packager, Plant A",
+     "station": "plant-a-line3"
+    },
+    "parser_version": "facts-1.2",
+    "untrusted_text": false
+   },
+   {
+    "id": "E-013",
+    "key": "control",
+    "kind": "verification",
+    "status": "ok",
+    "summary": "after I-1: cam1: ok; cam2: ok; cam3: ok; cam4: ok",
+    "data": {
+     "results": {
+      "cam1": {
+       "result": "ok",
+       "detail": "control channel opened, heartbeat 3000 ms"
+      },
+      "cam2": {
+       "result": "ok",
+       "detail": "control channel opened, heartbeat 3000 ms"
+      },
+      "cam3": {
+       "result": "ok",
+       "detail": "control channel opened, heartbeat 3000 ms"
+      },
+      "cam4": {
+       "result": "ok",
+       "detail": "control channel opened, heartbeat 3000 ms"
+      }
+     },
+     "note": "Opens and immediately releases a control channel; read-only."
+    },
+    "provenance": "verification:control_probe",
+    "captured_at": "2026-11-09T06:38:30",
+    "received_seq": 25,
+    "scope": {
+     "site": "Fictional contract packager, Plant A",
+     "station": "plant-a-line3"
+    },
+    "parser_version": "facts-1.2",
+    "untrusted_text": false
+   },
+   {
+    "id": "E-014",
+    "key": "plc",
+    "kind": "verification",
+    "status": "ok",
+    "summary": "after I-1: triggers reach all cameras",
+    "data": {
+     "per_camera": {
+      "cam1": {
+       "triggers_sent": 600,
+       "frames_started": 600,
+       "result_timeouts": 0
+      },
+      "cam2": {
+       "triggers_sent": 600,
+       "frames_started": 600,
+       "result_timeouts": 0
+      },
+      "cam3": {
+       "triggers_sent": 600,
+       "frames_started": 600,
+       "result_timeouts": 0
+      },
+      "cam4": {
+       "triggers_sent": 600,
+       "frames_started": 600,
+       "result_timeouts": 0
+      }
+     },
+     "result_link": "ok",
+     "window": "last 60 s of production"
+    },
+    "provenance": "verification:inspect_plc_link",
+    "captured_at": "2026-11-09T06:38:18",
+    "received_seq": 26,
+    "scope": {
+     "site": "Fictional contract packager, Plant A",
+     "station": "plant-a-line3"
+    },
+    "parser_version": "facts-1.2",
+    "untrusted_text": false
+   }
+  ],
+  "hypotheses": [
+   {
+    "rule_id": "H-BURST",
+    "title": "Synchronous camera bursts overflow the switch uplink buffer",
+    "family": "network_and_configuration",
+    "severity": 4,
+    "status": "confirmed",
+    "active": true,
+    "corroborating": [],
+    "alternatives": [],
+    "supporting": [
+     "E-005",
+     "E-006",
+     "E-008",
+     "E-011"
+    ],
+    "contradicting": [],
+    "missing": [],
+    "reasons": [
+     "\u2713 every camera is clean when acquired alone",
+     "\u2713 switch uplink egress drops during bursts",
+     "\u2713 host is requesting packet resends",
+     "\u2713 same configuration is usable at low line speed"
+    ],
+    "playbook": "PB-PACING",
+    "disposition_hint": "known_playbook",
+    "sources": [
+     "S1",
+     "S5"
+    ]
+   },
+   {
+    "rule_id": "H-HOST-BACKPRESSURE",
+    "title": "Host application cannot keep up (image pool exhausted)",
+    "family": "application_defect",
+    "severity": 3,
+    "status": "contradicted",
+    "active": false,
+    "corroborating": [],
+    "alternatives": [],
+    "supporting": [],
+    "contradicting": [
+     "E-005",
+     "E-010"
+    ],
+    "missing": [],
+    "reasons": [
+     "\u2717 not observed: frames dropped inside the application",
+     "\u2717 not observed: debug image archive enabled or image pool undersized"
+    ],
+    "playbook": "PB-HOST-BUFFERS",
+    "disposition_hint": "known_playbook",
+    "sources": [
+     "S5"
+    ]
+   },
+   {
+    "rule_id": "H-PERM",
+    "title": "Service user lacks permission for the acquisition filter driver (Linux)",
+    "family": "identity_permissions",
+    "severity": 3,
+    "status": "contradicted",
+    "active": false,
+    "corroborating": [],
+    "alternatives": [],
+    "supporting": [],
+    "contradicting": [
+     "E-010"
+    ],
+    "missing": [],
+    "reasons": [
+     "\u2717 not observed: permission denied opening the filter-driver device",
+     "\u2717 not observed: Linux host"
+    ],
+    "playbook": "PB-PERM",
+    "disposition_hint": "known_playbook",
+    "sources": []
+   },
+   {
+    "rule_id": "H-CABLE",
+    "title": "Damaged cable or connector on one camera link",
+    "family": "physical",
+    "severity": 4,
+    "status": "contradicted",
+    "active": false,
+    "corroborating": [],
+    "alternatives": [],
+    "supporting": [],
+    "contradicting": [
+     "E-006",
+     "E-011"
+    ],
+    "missing": [
+     "tech.substitution"
+    ],
+    "reasons": [
+     "\u2717 not observed: CRC errors on a camera port",
+     "\u2717 not observed: loss persists when the camera runs alone",
+     "untested: controlled substitution: fault followed the cable"
+    ],
+    "playbook": null,
+    "disposition_hint": "field_service",
+    "sources": []
+   },
+   {
+    "rule_id": "H-CAMERA-HW",
+    "title": "Camera hardware fault (spontaneous resets)",
+    "family": "physical",
+    "severity": 5,
+    "status": "contradicted",
+    "active": false,
+    "corroborating": [],
+    "alternatives": [],
+    "supporting": [
+     "E-006"
+    ],
+    "contradicting": [
+     "E-006"
+    ],
+    "missing": [
+     "tech.substitution"
+    ],
+    "reasons": [
+     "\u2717 not observed: camera uptime counter restarted",
+     "\u2713 PoE budget is not exceeded",
+     "untested: controlled substitution: fault followed the camera"
+    ],
+    "playbook": null,
+    "disposition_hint": "field_service",
+    "sources": []
+   },
+   {
+    "rule_id": "H-POE",
+    "title": "PoE power budget exceeded on the replacement switch",
+    "family": "network_and_configuration",
+    "severity": 4,
+    "status": "contradicted",
+    "active": false,
+    "corroborating": [],
+    "alternatives": [],
+    "supporting": [],
+    "contradicting": [
+     "E-006"
+    ],
+    "missing": [
+     "events"
+    ],
+    "reasons": [
+     "\u2717 not observed: PoE draw exceeds switch budget",
+     "untested: switch logged power denial"
+    ],
+    "playbook": "PB-POE",
+    "disposition_hint": "known_playbook",
+    "sources": []
+   },
+   {
+    "rule_id": "H-ADAPTER",
+    "title": "Installed camera adapter does not match camera firmware",
+    "family": "interoperability_version",
+    "severity": 3,
+    "status": "contradicted",
+    "active": false,
+    "corroborating": [],
+    "alternatives": [],
+    "supporting": [],
+    "contradicting": [
+     "E-007"
+    ],
+    "missing": [
+     "discovery",
+     "versions"
+    ],
+    "reasons": [
+     "untested: camera answers discovery, so the network path to it works",
+     "\u2717 not observed: control channel refused: no matching adapter",
+     "untested: compatibility matrix: required adapter not installed"
+    ],
+    "playbook": "PB-ADAPTER",
+    "disposition_hint": "known_playbook",
+    "sources": [
+     "S2"
+    ]
+   },
+   {
+    "rule_id": "H-UNRELEASED-FW",
+    "title": "Camera runs firmware outside the released compatibility matrix",
+    "family": "interoperability_version",
+    "severity": 4,
+    "status": "untested",
+    "active": false,
+    "corroborating": [],
+    "alternatives": [],
+    "supporting": [],
+    "contradicting": [],
+    "missing": [
+     "versions"
+    ],
+    "reasons": [
+     "untested: firmware not in released list"
+    ],
+    "playbook": null,
+    "disposition_hint": "engineering_escalation",
+    "sources": [
+     "S2"
+    ]
+   },
+   {
+    "rule_id": "H-SUBNET",
+    "title": "Camera has no persistent IP in the station subnet",
+    "family": "network_and_configuration",
+    "severity": 2,
+    "status": "untested",
+    "active": false,
+    "corroborating": [],
+    "alternatives": [],
+    "supporting": [],
+    "contradicting": [],
+    "missing": [
+     "discovery"
+    ],
+    "reasons": [
+     "untested: discovered with link-local address outside host subnet"
+    ],
+    "playbook": "PB-IP",
+    "disposition_hint": "known_playbook",
+    "sources": []
+   },
+   {
+    "rule_id": "H-STALE-LOCK",
+    "title": "Control privilege retained after an application crash (heartbeat not yet expired)",
+    "family": "identity_permissions",
+    "severity": 3,
+    "status": "untested",
+    "active": false,
+    "corroborating": [],
+    "alternatives": [],
+    "supporting": [],
+    "contradicting": [],
+    "missing": [
+     "events",
+     "versions"
+    ],
+    "reasons": [
+     "untested: application crash followed by 'already controlled' on restart",
+     "untested: SDK version and debug-heartbeat setting are inside the documented scope"
+    ],
+    "playbook": "PB-RELEASE-LOCK",
+    "disposition_hint": "known_playbook",
+    "sources": [
+     "S3"
+    ]
+   },
+   {
+    "rule_id": "H-HEARTBEAT-GAP",
+    "title": "Heartbeat gap after idle causes cameras to refuse control (no confirmed root cause)",
+    "family": "application_defect",
+    "severity": 4,
+    "status": "untested",
+    "active": false,
+    "corroborating": [],
+    "alternatives": [
+     "Heartbeat thread starvation on the new host (timer resolution / power plan)",
+     "NIC power-saving or energy-efficient Ethernet delaying GVCP packets after idle",
+     "SDK polling interval interacting with the 3 s heartbeat timeout",
+     "Switch or firewall behaviour after idle (less likely: affects all four cameras at once)"
+    ],
+    "supporting": [],
+    "contradicting": [],
+    "missing": [
+     "events"
+    ],
+    "reasons": [
+     "untested: heartbeat ACK ACCESS_DENIED after a gap longer than the timeout",
+     "untested: no application crash preceded the lockout"
+    ],
+    "playbook": null,
+    "disposition_hint": "engineering_escalation",
+    "sources": [
+     "S6",
+     "S3"
+    ]
+   },
+   {
+    "rule_id": "H-TRAILER",
+    "title": "Talon camera needs the documented trailer-handling setting",
+    "family": "interoperability_version",
+    "severity": 3,
+    "status": "contradicted",
+    "active": false,
+    "corroborating": [],
+    "alternatives": [],
+    "supporting": [],
+    "contradicting": [
+     "E-005"
+    ],
+    "missing": [
+     "versions"
+    ],
+    "reasons": [
+     "\u2717 not observed: frames rejected as invalid payload",
+     "untested: Talon device without its scoped setting",
+     "untested: known issue matches vendor/model"
+    ],
+    "playbook": "PB-TRAILER",
+    "disposition_hint": "known_playbook",
+    "sources": [
+     "S4"
+    ]
+   },
+   {
+    "rule_id": "H-TRAILER-MISAPPLIED",
+    "title": "Trailer workaround applied to cameras outside its scope",
+    "family": "network_and_configuration",
+    "severity": 3,
+    "status": "contradicted",
+    "active": false,
+    "corroborating": [],
+    "alternatives": [],
+    "supporting": [],
+    "contradicting": [
+     "E-005"
+    ],
+    "missing": [
+     "versions"
+    ],
+    "reasons": [
+     "\u2717 not observed: frames rejected as invalid payload",
+     "untested: vendor-specific setting enabled on other vendors' cameras"
+    ],
+    "playbook": "PB-TRAILER",
+    "disposition_hint": "known_playbook",
+    "sources": [
+     "S4"
+    ]
+   },
+   {
+    "rule_id": "H-FW-DEFECT",
+    "title": "Known firmware defect on this exact model and revision",
+    "family": "firmware_defect",
+    "severity": 4,
+    "status": "contradicted",
+    "active": false,
+    "corroborating": [],
+    "alternatives": [],
+    "supporting": [],
+    "contradicting": [
+     "E-005"
+    ],
+    "missing": [
+     "versions"
+    ],
+    "reasons": [
+     "\u2717 not observed: acquisition fails to start",
+     "untested: known issue matches model and firmware"
+    ],
+    "playbook": "PB-FW-UPDATE",
+    "disposition_hint": "known_playbook",
+    "sources": [
+     "S4"
+    ]
+   },
+   {
+    "rule_id": "H-LOCALE",
+    "title": "Register writes rejected because of a decimal-comma locale",
+    "family": "interoperability_version",
+    "severity": 2,
+    "status": "contradicted",
+    "active": false,
+    "corroborating": [],
+    "alternatives": [],
+    "supporting": [],
+    "contradicting": [
+     "E-007",
+     "E-010"
+    ],
+    "missing": [],
+    "reasons": [
+     "\u2717 not observed: control opens but float register writes fail",
+     "\u2717 not observed: service locale uses a decimal comma"
+    ],
+    "playbook": "PB-LOCALE",
+    "disposition_hint": "known_playbook",
+    "sources": [
+     "S5"
+    ]
+   },
+   {
+    "rule_id": "H-PLC-TRIGGER",
+    "title": "PLC triggers not reaching a camera (I/O mapping on new host)",
+    "family": "network_and_configuration",
+    "severity": 3,
+    "status": "contradicted",
+    "active": false,
+    "corroborating": [],
+    "alternatives": [],
+    "supporting": [
+     "E-007"
+    ],
+    "contradicting": [
+     "E-009"
+    ],
+    "missing": [],
+    "reasons": [
+     "\u2717 not observed: PLC sends triggers but no frames start",
+     "\u2713 camera control path is healthy"
+    ],
+    "playbook": "PB-TRIGGER",
+    "disposition_hint": "known_playbook",
+    "sources": []
+   },
+   {
+    "rule_id": "H-MGMT-CERT",
+    "title": "Management-service client certificate expired (dashboard stale)",
+    "family": "identity_permissions",
+    "severity": 2,
+    "status": "untested",
+    "active": false,
+    "corroborating": [],
+    "alternatives": [],
+    "supporting": [],
+    "contradicting": [],
+    "missing": [
+     "mgmt"
+    ],
+    "reasons": [
+     "untested: broker rejected an expired client certificate",
+     "untested: acquisition is running locally"
+    ],
+    "playbook": "PB-CERT",
+    "disposition_hint": "known_playbook",
+    "sources": []
+   },
+   {
+    "rule_id": "H-MGMT-IDENTITY",
+    "title": "Replacement host not enrolled with the plant broker",
+    "family": "identity_permissions",
+    "severity": 2,
+    "status": "untested",
+    "active": false,
+    "corroborating": [],
+    "alternatives": [],
+    "supporting": [],
+    "contradicting": [],
+    "missing": [
+     "mgmt"
+    ],
+    "reasons": [
+     "untested: broker rejected the client identity",
+     "untested: acquisition is running locally"
+    ],
+    "playbook": "PB-REENROLL",
+    "disposition_hint": "known_playbook",
+    "sources": []
+   }
+  ],
+  "diagnostics": [
+   {
+    "id": "D-DISC",
+    "tool": "discovery_scan",
+    "args": {},
+    "title": "Discovery scan (GVCP broadcast)",
+    "produces": [
+     "discovery"
+    ],
+    "effort": 0,
+    "disruption": 0,
+    "requires_technician": false,
+    "state": "skipped",
+    "reason": "would not change any active hypothesis or open symptom",
+    "score": null,
+    "score_detail": {},
+    "evidence_ids": [],
+    "for_hypotheses": []
+   },
+   {
+    "id": "D-CTRL",
+    "tool": "control_probe",
+    "args": {},
+    "title": "Open/release each control channel",
+    "produces": [
+     "control"
+    ],
+    "effort": 0,
+    "disruption": 0,
+    "requires_technician": false,
+    "state": "evaluated",
+    "reason": "discriminates 2 hypotheses",
+    "score": 5.0,
+    "score_detail": {
+     "hypotheses": [
+      "H-LOCALE",
+      "H-PLC-TRIGGER"
+     ],
+     "severity_weight": 5,
+     "open_symptoms": 0,
+     "handoff": false,
+     "effort": 0,
+     "disruption": 0,
+     "cost": 1
+    },
+    "evidence_ids": [
+     "E-007"
+    ],
+    "for_hypotheses": [
+     "H-LOCALE",
+     "H-PLC-TRIGGER"
+    ]
+   },
+   {
+    "id": "D-VER",
+    "tool": "compare_versions",
+    "args": {},
+    "title": "Compare versions against compatibility matrix and known issues",
+    "produces": [
+     "versions"
+    ],
+    "effort": 0,
+    "disruption": 0,
+    "requires_technician": false,
+    "state": "skipped",
+    "reason": "would not change any active hypothesis or open symptom",
+    "score": null,
+    "score_detail": {},
+    "evidence_ids": [],
+    "for_hypotheses": []
+   },
+   {
+    "id": "D-STREAM-PROD",
+    "tool": "inspect_acquisition_stats",
+    "args": {
+     "mode": "production"
+    },
+    "title": "Production acquisition statistics (all cameras, last 60 s)",
+    "produces": [
+     "stream.production"
+    ],
+    "effort": 0,
+    "disruption": 0,
+    "requires_technician": false,
+    "state": "evaluated",
+    "reason": "discriminates 5 hypotheses, tests 2 open symptom(s)",
+    "score": 23.0,
+    "score_detail": {
+     "hypotheses": [
+      "H-BURST",
+      "H-FW-DEFECT",
+      "H-HOST-BACKPRESSURE",
+      "H-TRAILER",
+      "H-TRAILER-MISAPPLIED"
+     ],
+     "severity_weight": 17,
+     "open_symptoms": 2,
+     "handoff": false,
+     "effort": 0,
+     "disruption": 0,
+     "cost": 1
+    },
+    "evidence_ids": [
+     "E-005"
+    ],
+    "for_hypotheses": [
+     "H-BURST",
+     "H-FW-DEFECT",
+     "H-HOST-BACKPRESSURE",
+     "H-TRAILER",
+     "H-TRAILER-MISAPPLIED"
+    ]
+   },
+   {
+    "id": "D-STREAM-LOW",
+    "tool": "inspect_acquisition_stats",
+    "args": {
+     "mode": "low"
+    },
+    "title": "Low-speed acquisition statistics (weekend run history)",
+    "produces": [
+     "stream.low"
+    ],
+    "effort": 0,
+    "disruption": 0,
+    "requires_technician": false,
+    "state": "evaluated",
+    "reason": "discriminates 1 hypotheses",
+    "score": 4.0,
+    "score_detail": {
+     "hypotheses": [
+      "H-BURST"
+     ],
+     "severity_weight": 4,
+     "open_symptoms": 0,
+     "handoff": false,
+     "effort": 0,
+     "disruption": 0,
+     "cost": 1
+    },
+    "evidence_ids": [
+     "E-008"
+    ],
+    "for_hypotheses": [
+     "H-BURST"
+    ]
+   },
+   {
+    "id": "D-STREAM-SINGLE",
+    "tool": "inspect_acquisition_stats",
+    "args": {
+     "mode": "single"
+    },
+    "title": "Acquire each camera alone at production trigger rate",
+    "produces": [
+     "stream.single"
+    ],
+    "effort": 1,
+    "disruption": 2,
+    "requires_technician": false,
+    "state": "evaluated",
+    "reason": "discriminates 1 hypotheses",
+    "score": 0.67,
+    "score_detail": {
+     "hypotheses": [
+      "H-BURST"
+     ],
+     "severity_weight": 4,
+     "open_symptoms": 0,
+     "handoff": false,
+     "effort": 1,
+     "disruption": 2,
+     "cost": 6
+    },
+    "evidence_ids": [
+     "E-011"
+    ],
+    "for_hypotheses": [
+     "H-BURST"
+    ]
+   },
+   {
+    "id": "D-TOPO",
+    "tool": "inspect_topology",
+    "args": {},
+    "title": "Switch port, PoE and uplink counters",
+    "produces": [
+     "topology"
+    ],
+    "effort": 0,
+    "disruption": 0,
+    "requires_technician": false,
+    "state": "evaluated",
+    "reason": "discriminates 2 hypotheses",
+    "score": 8.0,
+    "score_detail": {
+     "hypotheses": [
+      "H-BURST",
+      "H-CABLE"
+     ],
+     "severity_weight": 8,
+     "open_symptoms": 0,
+     "handoff": false,
+     "effort": 0,
+     "disruption": 0,
+     "cost": 1
+    },
+    "evidence_ids": [
+     "E-006"
+    ],
+    "for_hypotheses": [
+     "H-BURST",
+     "H-CABLE"
+    ]
+   },
+   {
+    "id": "D-HOST",
+    "tool": "inspect_host",
+    "args": {},
+    "title": "Edge host resources, drivers and settings",
+    "produces": [
+     "host"
+    ],
+    "effort": 0,
+    "disruption": 0,
+    "requires_technician": false,
+    "state": "evaluated",
+    "reason": "discriminates 1 hypotheses",
+    "score": 3.0,
+    "score_detail": {
+     "hypotheses": [
+      "H-PERM"
+     ],
+     "severity_weight": 3,
+     "open_symptoms": 0,
+     "handoff": false,
+     "effort": 0,
+     "disruption": 0,
+     "cost": 1
+    },
+    "evidence_ids": [
+     "E-010"
+    ],
+    "for_hypotheses": [
+     "H-PERM"
+    ]
+   },
+   {
+    "id": "D-PLC",
+    "tool": "inspect_plc_link",
+    "args": {},
+    "title": "PLC trigger / result handshake counters",
+    "produces": [
+     "plc"
+    ],
+    "effort": 0,
+    "disruption": 0,
+    "requires_technician": false,
+    "state": "evaluated",
+    "reason": "discriminates 1 hypotheses",
+    "score": 3.0,
+    "score_detail": {
+     "hypotheses": [
+      "H-PLC-TRIGGER"
+     ],
+     "severity_weight": 3,
+     "open_symptoms": 0,
+     "handoff": false,
+     "effort": 0,
+     "disruption": 0,
+     "cost": 1
+    },
+    "evidence_ids": [
+     "E-009"
+    ],
+    "for_hypotheses": [
+     "H-PLC-TRIGGER"
+    ]
+   },
+   {
+    "id": "D-MGMT",
+    "tool": "inspect_management",
+    "args": {},
+    "title": "Station-management link (MQTT/TLS) and dashboard freshness",
+    "produces": [
+     "mgmt"
+    ],
+    "effort": 0,
+    "disruption": 0,
+    "requires_technician": false,
+    "state": "skipped",
+    "reason": "would not change any active hypothesis or open symptom",
+    "score": null,
+    "score_detail": {},
+    "evidence_ids": [],
+    "for_hypotheses": []
+   },
+   {
+    "id": "D-EVENTS",
+    "tool": "correlate_events",
+    "args": {
+     "window_h": 48
+    },
+    "title": "Correlate host, camera, switch and agent events (48 h)",
+    "produces": [
+     "events"
+    ],
+    "effort": 0,
+    "disruption": 0,
+    "requires_technician": false,
+    "state": "skipped",
+    "reason": "would not change any active hypothesis or open symptom",
+    "score": null,
+    "score_detail": {},
+    "evidence_ids": [],
+    "for_hypotheses": []
+   },
+   {
+    "id": "D-TECH-VIEWER",
+    "tool": "request_observation",
+    "args": {
+     "question": "viewer_single"
+    },
+    "title": "Ask technician: does the vendor viewer acquire this camera alone?",
+    "produces": [
+     "tech.viewer_single"
+    ],
+    "effort": 3,
+    "disruption": 1,
+    "requires_technician": true,
+    "state": "skipped",
+    "reason": "would not change any active hypothesis or open symptom",
+    "score": null,
+    "score_detail": {},
+    "evidence_ids": [],
+    "for_hypotheses": []
+   },
+   {
+    "id": "D-TECH-SUBST",
+    "tool": "request_observation",
+    "args": {
+     "question": "substitution"
+    },
+    "title": "Ask technician: controlled cable/port substitution",
+    "produces": [
+     "tech.substitution"
+    ],
+    "effort": 5,
+    "disruption": 2,
+    "requires_technician": true,
+    "state": "skipped",
+    "reason": "would not change any active hypothesis or open symptom",
+    "score": null,
+    "score_detail": {},
+    "evidence_ids": [],
+    "for_hypotheses": []
+   },
+   {
+    "id": "D-TECH-IDLE",
+    "tool": "request_observation",
+    "args": {
+     "question": "idle_pattern"
+    },
+    "title": "Ask technician: does it follow idle periods?",
+    "produces": [
+     "tech.idle_pattern"
+    ],
+    "effort": 1,
+    "disruption": 0,
+    "requires_technician": true,
+    "state": "skipped",
+    "reason": "would not change any active hypothesis or open symptom",
+    "score": null,
+    "score_detail": {},
+    "evidence_ids": [],
+    "for_hypotheses": []
+   },
+   {
+    "id": "D-TECH-CHANGES",
+    "tool": "request_observation",
+    "args": {
+     "question": "recent_changes"
+    },
+    "title": "Ask technician: what changed and when did it last work?",
+    "produces": [
+     "tech.recent_changes"
+    ],
+    "effort": 1,
+    "disruption": 0,
+    "requires_technician": true,
+    "state": "skipped",
+    "reason": "would not change any active hypothesis or open symptom",
+    "score": null,
+    "score_detail": {},
+    "evidence_ids": [],
+    "for_hypotheses": []
+   }
+  ],
+  "trace": [
+   {
+    "seq": 1,
+    "actor": "engine",
+    "action": "structure ticket",
+    "tool": "structure_ticket",
+    "inputs": {
+     "chars": 210
+    },
+    "outputs": {
+     "structured": {
+      "symptom_groups": [
+       "offline",
+       "missing_images"
+      ],
+      "devices_mentioned": [
+       "cam3"
+      ],
+      "claims": [
+       {
+        "claim": "replacement_needed",
+        "device": "cam3",
+        "text": "send a replacement for Camera 3"
+       },
+       {
+        "claim": "works_at_low_speed",
+        "device": null,
+        "text": "line looks fine at low speed"
+       }
+      ],
+      "requested_actions": [
+       {
+        "action": "replacement",
+        "device": "cam3",
+        "target": null
+       }
+      ],
+      "restart_count": 2,
+      "changes": [],
+      "cited_references": []
+     },
+     "meta": {
+      "origin": "hand_authored",
+      "label": "replay of a HAND-AUTHORED fixture (not model output)",
+      "parser_version": "replay:TicketStructure-v1",
+      "latency_ms": 0.0,
+      "cost_usd": 0.0
+     }
+    },
+    "note": "replay of a HAND-AUTHORED fixture (not model output)"
+   },
+   {
+    "seq": 2,
+    "actor": "guard",
+    "action": "evaluated customer-requested action",
+    "tool": null,
+    "inputs": {},
+    "outputs": {
+     "type": "request_noted",
+     "origin": "ticket",
+     "match": "replacement of cam3",
+     "action": "evaluated as a customer assertion, not executed"
+    },
+    "note": ""
+   },
+   {
+    "seq": 8,
+    "actor": "engine",
+    "action": "ran diagnostic",
+    "tool": "inspect_acquisition_stats",
+    "inputs": {
+     "diagnostic": "D-STREAM-PROD",
+     "mode": "production"
+    },
+    "outputs": {
+     "evidence": "E-005",
+     "status": "ok",
+     "summary": "64.33% usable at 10.0 cartons/s; late 35.67%, incomplete 0.0%, resend requests 9012; errors {'TOO_MANY_CONSECUTIVE_RESENDS': 128, 'AUTO_ABORTED': 85}"
+    },
+    "note": ""
+   },
+   {
+    "seq": 10,
+    "actor": "engine",
+    "action": "ran diagnostic",
+    "tool": "inspect_topology",
+    "inputs": {
+     "diagnostic": "D-TOPO"
+    },
+    "outputs": {
+     "evidence": "E-006",
+     "status": "ok",
+     "summary": "uplink egress drops 9560/min; buffer 448 KB; CRC none; PoE 19.2/65 W"
+    },
+    "note": ""
+   },
+   {
+    "seq": 12,
+    "actor": "engine",
+    "action": "ran diagnostic",
+    "tool": "control_probe",
+    "inputs": {
+     "diagnostic": "D-CTRL"
+    },
+    "outputs": {
+     "evidence": "E-007",
+     "status": "ok",
+     "summary": "cam1: ok; cam2: ok; cam3: ok; cam4: ok"
+    },
+    "note": ""
+   },
+   {
+    "seq": 14,
+    "actor": "engine",
+    "action": "ran diagnostic",
+    "tool": "inspect_acquisition_stats",
+    "inputs": {
+     "diagnostic": "D-STREAM-LOW",
+     "mode": "low"
+    },
+    "outputs": {
+     "evidence": "E-008",
+     "status": "ok",
+     "summary": "100.0% usable at 4.0 cartons/s; late 0.0%, incomplete 0.0%, resend requests 10160"
+    },
+    "note": ""
+   },
+   {
+    "seq": 16,
+    "actor": "engine",
+    "action": "ran diagnostic",
+    "tool": "inspect_plc_link",
+    "inputs": {
+     "diagnostic": "D-PLC"
+    },
+    "outputs": {
+     "evidence": "E-009",
+     "status": "ok",
+     "summary": "triggers reach all cameras"
+    },
+    "note": ""
+   },
+   {
+    "seq": 18,
+    "actor": "engine",
+    "action": "ran diagnostic",
+    "tool": "inspect_host",
+    "inputs": {
+     "diagnostic": "D-HOST"
+    },
+    "outputs": {
+     "evidence": "E-010",
+     "status": "ok",
+     "summary": "Windows 11 IoT LTSC 24H2, Kestrel Acquisition SDK 3.2.0, CPU p95 34%, image pool 64"
+    },
+    "note": ""
+   },
+   {
+    "seq": 20,
+    "actor": "engine",
+    "action": "ran diagnostic",
+    "tool": "inspect_acquisition_stats",
+    "inputs": {
+     "diagnostic": "D-STREAM-SINGLE",
+     "mode": "single"
+    },
+    "outputs": {
+     "evidence": "E-011",
+     "status": "ok",
+     "summary": "alone: cam1 100.0%, cam2 100.0%, cam3 100.0%, cam4 100.0%"
+    },
+    "note": ""
+   },
+   {
+    "seq": 21,
+    "actor": "engine",
+    "action": "generated options for PB-PACING",
+    "tool": "retrieve_playbook",
+    "inputs": {
+     "playbook": "PB-PACING",
+     "hypothesis": "H-BURST"
+    },
+    "outputs": {
+     "options": [
+      "O-PACE-FAIR",
+      "O-STAGGER",
+      "O-PACE-LOW",
+      "O-SLOW-LINE"
+     ],
+     "recommended": "O-PACE-FAIR"
+    },
+    "note": ""
+   },
+   {
+    "seq": 23,
+    "actor": "simulator",
+    "action": "applied simulated intervention",
+    "tool": "set_transport",
+    "inputs": {
+     "option": "O-PACE-FAIR",
+     "params": {
+      "throughput_limit_mbps": 245
+     },
+     "approved_by": "support engineer (simulated approval)"
+    },
+    "outputs": {
+     "result": "transport parameters written to camera profiles"
+    },
+    "note": ""
+   },
+   {
+    "seq": 27,
+    "actor": "engine",
+    "action": "verified intervention",
+    "tool": "verify",
+    "inputs": {
+     "intervention": "I-1",
+     "checks": [
+      "production_usable",
+      "deadline",
+      "line_rate",
+      "control_all_ok",
+      "plc_results_ok"
+     ]
+    },
+    "outputs": {
+     "passed": true,
+     "outcome": "resolved_verified"
+    },
+    "note": ""
+   },
+   {
+    "seq": 28,
+    "actor": "engine",
+    "action": "disposition: known_playbook",
+    "tool": null,
+    "inputs": {},
+    "outputs": {
+     "resolution": "resolved_verified",
+     "reasons": [
+      "All applied interventions passed verification."
+     ]
+    },
+    "note": ""
+   }
+  ],
+  "interventions": [
+   {
+    "id": "I-1",
+    "playbook": "PB-PACING",
+    "option_id": "O-PACE-FAIR",
+    "title": "Limit each camera to 245 Mb/s (sum fits the 1 Gb/s uplink)",
+    "params": {
+     "throughput_limit_mbps": 245
+    },
+    "simulated": true,
+    "applied_at_seq": 22,
+    "before_evidence": [
+     "E-005",
+     "E-007",
+     "E-009"
+    ]
+   }
+  ],
+  "intervention_options": [],
+  "verifications": [
+   {
+    "intervention_id": "I-1",
+    "passed": true,
+    "checks": [
+     {
+      "check": "production_usable",
+      "passed": true,
+      "detail": "100.0% usable (need \u2265 99.5%)",
+      "evidence": "E-012"
+     },
+     {
+      "check": "deadline",
+      "passed": true,
+      "detail": "0.0% of frames late for the 75.0 ms deadline (need \u2264 0.5%)",
+      "evidence": "E-012"
+     },
+     {
+      "check": "line_rate",
+      "passed": true,
+      "detail": "running at 10.0 cartons/s (need \u2265 10.0)",
+      "evidence": "E-012"
+     },
+     {
+      "check": "control_all_ok",
+      "passed": true,
+      "detail": "all control channels open",
+      "evidence": "E-013"
+     },
+     {
+      "check": "plc_results_ok",
+      "passed": true,
+      "detail": "every trigger answered with a result",
+      "evidence": "E-014"
+     }
+    ],
+    "evidence_ids": [
+     "E-012",
+     "E-013",
+     "E-014"
+    ],
+    "outcome": "resolved_verified"
+   }
+  ],
+  "assertions": [
+   {
+    "evidence_id": "E-003",
+    "claim": "replacement_needed",
+    "device": "cam3",
+    "status": "contradicted",
+    "evidence": [
+     "E-011"
+    ],
+    "note": "cam3 acquires cleanly when run alone; a replacement camera would not address this evidence."
+   },
+   {
+    "evidence_id": "E-004",
+    "claim": "works_at_low_speed",
+    "device": null,
+    "status": "consistent",
+    "evidence": [
+     "E-008"
+    ],
+    "note": "low-speed history: 100.0% usable"
+   }
+  ],
+  "symptoms": [
+   {
+    "tag": "camera_resets",
+    "state": "cleared",
+    "evidence": [
+     "E-006"
+    ],
+    "why": "no camera resets in 24 h",
+    "explained_by": []
+   },
+   {
+    "tag": "frame_loss",
+    "state": "cleared",
+    "evidence": [
+     "E-012"
+    ],
+    "why": "after intervention: 100.0% of production frames usable",
+    "explained_by": []
+   },
+   {
+    "tag": "trigger_missing",
+    "state": "cleared",
+    "evidence": [
+     "E-009"
+    ],
+    "why": "every PLC trigger starts a frame",
+    "explained_by": []
+   }
+  ],
+  "reported_groups": [
+   "offline",
+   "missing_images"
+  ],
+  "pending_question": null,
+  "next_check": null,
+  "disposition": "known_playbook",
+  "resolution": "resolved_verified",
+  "disposition_reasons": [
+   "All applied interventions passed verification."
+  ],
+  "guard_events": [
+   {
+    "type": "request_noted",
+    "origin": "ticket",
+    "match": "replacement of cam3",
+    "action": "evaluated as a customer assertion, not executed"
+   }
+  ],
+  "budget": {
+   "automated_used": 7,
+   "technician_used": 0,
+   "interventions_used": 1,
+   "max_automated_checks": 10,
+   "max_technician_questions": 3,
+   "max_interventions": 3
+  },
+  "seq": 28,
+  "finished": true,
+  "metrics": {
+   "scenario": {
+    "split": "demo",
+    "fixture": "documented_mechanism_replay",
+    "sources": [
+     "S1",
+     "S5"
+    ],
+    "title": "It only fails at full line speed",
+    "adversarial": null
+   },
+   "model_calls": [
+    {
+     "step": "intake",
+     "origin": "hand_authored",
+     "label": "replay of a HAND-AUTHORED fixture (not model output)",
+     "parser_version": "replay:TicketStructure-v1",
+     "latency_ms": 0.0,
+     "cost_usd": 0.0
+    }
+   ],
+   "devices_mentioned": [
+    "cam3"
+   ],
+   "options_considered": [
+    {
+     "playbook": "PB-PACING",
+     "chosen": "O-PACE-FAIR",
+     "options": [
+      {
+       "id": "O-PACE-FAIR",
+       "title": "Limit each camera to 245 Mb/s (sum fits the 1 Gb/s uplink)",
+       "params": {
+        "throughput_limit_mbps": 245
+       },
+       "predicted": {
+        "usable_frame_pct": 100.0,
+        "late_frame_pct": 0.0,
+        "worst_latency_p95_ms": 67.2,
+        "deadline_ms": 75.0,
+        "headroom_ms": 7.8,
+        "line_rate_cps": 10.0,
+        "avg_uplink_utilisation_pct": 52.3,
+        "per_camera_rate_mbps": 245.0
+       },
+       "meets_requirements": true,
+       "tradeoff": "Predicted 100.0% usable at 10.0 cartons/s; 7.8 ms headroom before the 75.0 ms deadline.",
+       "action": "set_transport",
+       "playbook": "PB-PACING",
+       "recommended": true
+      },
+      {
+       "id": "O-STAGGER",
+       "title": "Full-rate transmission with 14.1 ms frame-transmission delay per camera",
+       "params": {
+        "throughput_limit_mbps": 1000.0,
+        "ftd_step_ms": 14.1
+       },
+       "predicted": {
+        "usable_frame_pct": 100.0,
+        "late_frame_pct": 0.0,
+        "worst_latency_p95_ms": 69.2,
+        "deadline_ms": 75.0,
+        "headroom_ms": 5.8,
+        "line_rate_cps": 10.0,
+        "avg_uplink_utilisation_pct": 52.3,
+        "per_camera_rate_mbps": 1000.0
+       },
+       "meets_requirements": true,
+       "tradeoff": "Predicted 100.0% usable at 10.0 cartons/s; 5.8 ms headroom before the 75.0 ms deadline.",
+       "action": "set_transport",
+       "playbook": "PB-PACING",
+       "recommended": false
+      },
+      {
+       "id": "O-PACE-LOW",
+       "title": "Limit each camera to 150 Mb/s (maximum inter-packet delay)",
+       "params": {
+        "throughput_limit_mbps": 150.0
+       },
+       "predicted": {
+        "usable_frame_pct": 0.0,
+        "late_frame_pct": 100.0,
+        "worst_latency_p95_ms": 101.1,
+        "deadline_ms": 75.0,
+        "headroom_ms": -26.1,
+        "line_rate_cps": 10.0,
+        "avg_uplink_utilisation_pct": 52.3,
+        "per_camera_rate_mbps": 150.0
+       },
+       "meets_requirements": false,
+       "tradeoff": "Worst-camera p95 result latency 101.1 ms misses the 75.0 ms reject-gate deadline; images complete but late.",
+       "action": "set_transport",
+       "playbook": "PB-PACING",
+       "recommended": false
+      },
+      {
+       "id": "O-SLOW-LINE",
+       "title": "Run the line at 7 cartons/s instead of 10",
+       "params": {
+        "rate_cps": 7.0
+       },
+       "predicted": {
+        "usable_frame_pct": 100.0,
+        "late_frame_pct": 0.0,
+        "worst_latency_p95_ms": 87.3,
+        "deadline_ms": 117.9,
+        "headroom_ms": 30.6,
+        "line_rate_cps": 7.0,
+        "avg_uplink_utilisation_pct": 36.6,
+        "per_camera_rate_mbps": 265.0
+       },
+       "meets_requirements": false,
+       "tradeoff": "Mitigation only: 7.0 cartons/s is below the required 10.0.",
+       "action": "set_line_rate",
+       "playbook": "PB-PACING",
+       "recommended": false
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "handoff": {
+  "case_id": "CASE-demo-a-line-speed-1101",
+  "rules_version": "2026.11.3",
+  "mode": "replay",
+  "disposition": "known_playbook",
+  "resolution": "resolved_verified",
+  "reasons": [
+   "All applied interventions passed verification."
+  ],
+  "simulation_notice": "All observations come from LineSight's simulator; no real hardware was touched.",
+  "station": {
+   "site": "Fictional contract packager, Plant A",
+   "line": "Line 3 \u2014 carton labelling",
+   "template": "LS-4 label & batch-code inspection"
+  },
+  "versions": {
+   "host_os": "Windows 11 IoT LTSC 24H2",
+   "acquisition_sdk": "Kestrel Acquisition SDK 3.2.0",
+   "inspection_app": "Meridian Inspect 6.4.1",
+   "adapters": [
+    "vireo-adapter-4.3"
+   ],
+   "nic_driver": "igb 13.0",
+   "camera_firmware": {
+    "cam1": "4.3.2",
+    "cam2": "4.3.2",
+    "cam3": "4.3.2",
+    "cam4": "4.3.2"
+   },
+   "plc_program": "L3-PKG r27",
+   "mgmt_agent": "station-agent 2.1",
+   "evidence": []
+  },
+  "topology": [
+   {
+    "device": "cam1",
+    "kind": "camera",
+    "model": "Corvid Imaging Vireo GV-16M",
+    "role": "Front label"
+   },
+   {
+    "device": "cam2",
+    "kind": "camera",
+    "model": "Corvid Imaging Vireo GV-16M",
+    "role": "Back label"
+   },
+   {
+    "device": "cam3",
+    "kind": "camera",
+    "model": "Corvid Imaging Vireo GV-16M",
+    "role": "Batch code (top)"
+   },
+   {
+    "device": "cam4",
+    "kind": "camera",
+    "model": "Corvid Imaging Vireo GV-16M",
+    "role": "Batch code (side)"
+   },
+   {
+    "device": "sw1",
+    "kind": "switch",
+    "model": "NetPier NP-8L managed PoE",
+    "role": null
+   },
+   {
+    "device": "host",
+    "kind": "edge_host",
+    "model": "Meridian EH-310",
+    "role": null
+   },
+   {
+    "device": "plc",
+    "kind": "plc",
+    "model": "Generic Line controller",
+    "role": null
+   },
+   {
+    "device": "mgmt",
+    "kind": "mgmt_service",
+    "model": "Plant IT Station management broker",
+    "role": null
+   }
+  ],
+  "timeline": [
+   {
+    "t": "2026-11-07T09:10:00",
+    "what": "Maintenance replaced edge PC (EH-200 \u2192 EH-310); inspection profile imported from installer defaults",
+    "source": "customer timeline (assertion)"
+   },
+   {
+    "t": "2026-11-07T13:40:00",
+    "what": "Maintenance replaced PoE switch (NP-8G \u2192 NP-8L)",
+    "source": "customer timeline (assertion)"
+   },
+   {
+    "t": "2026-11-07T16:00:00",
+    "what": "Low-speed test run (4 cartons/s): no diversions",
+    "source": "customer timeline (assertion)"
+   },
+   {
+    "t": "2026-11-09T06:05:00",
+    "what": "Production start at 10 cartons/s",
+    "source": "customer timeline (assertion)"
+   },
+   {
+    "t": "2026-11-09T06:12:00",
+    "what": "First diversions for missing images",
+    "source": "customer timeline (assertion)"
+   },
+   {
+    "t": "2026-11-09T06:20:00",
+    "what": "Operator restarted Camera 3 (no change)",
+    "source": "customer timeline (assertion)"
+   },
+   {
+    "t": "2026-11-09T06:31:00",
+    "what": "Operator restarted Camera 3 again (no change)",
+    "source": "customer timeline (assertion)"
+   }
+  ],
+  "checks_performed": [
+   {
+    "id": "D-CTRL",
+    "title": "Open/release each control channel",
+    "state": "evaluated",
+    "reason": "discriminates 2 hypotheses",
+    "evidence": [
+     "E-007"
+    ]
+   },
+   {
+    "id": "D-STREAM-PROD",
+    "title": "Production acquisition statistics (all cameras, last 60 s)",
+    "state": "evaluated",
+    "reason": "discriminates 5 hypotheses, tests 2 open symptom(s)",
+    "evidence": [
+     "E-005"
+    ]
+   },
+   {
+    "id": "D-STREAM-LOW",
+    "title": "Low-speed acquisition statistics (weekend run history)",
+    "state": "evaluated",
+    "reason": "discriminates 1 hypotheses",
+    "evidence": [
+     "E-008"
+    ]
+   },
+   {
+    "id": "D-STREAM-SINGLE",
+    "title": "Acquire each camera alone at production trigger rate",
+    "state": "evaluated",
+    "reason": "discriminates 1 hypotheses",
+    "evidence": [
+     "E-011"
+    ]
+   },
+   {
+    "id": "D-TOPO",
+    "title": "Switch port, PoE and uplink counters",
+    "state": "evaluated",
+    "reason": "discriminates 2 hypotheses",
+    "evidence": [
+     "E-006"
+    ]
+   },
+   {
+    "id": "D-HOST",
+    "title": "Edge host resources, drivers and settings",
+    "state": "evaluated",
+    "reason": "discriminates 1 hypotheses",
+    "evidence": [
+     "E-010"
+    ]
+   },
+   {
+    "id": "D-PLC",
+    "title": "PLC trigger / result handshake counters",
+    "state": "evaluated",
+    "reason": "discriminates 1 hypotheses",
+    "evidence": [
+     "E-009"
+    ]
+   }
+  ],
+  "observations": [
+   {
+    "id": "E-001",
+    "key": "ticket.symptom.offline",
+    "kind": "customer_assertion",
+    "status": "ok",
+    "summary": "Reported: Camera 'offline' (ambiguous)",
+    "captured_at": "2026-11-09T06:40:00",
+    "provenance": "ticket (Line 3 operator (ticket), relayed by maintenance technician) via replay of a HAND-AUTHORED fixture (not model output)"
+   },
+   {
+    "id": "E-002",
+    "key": "ticket.symptom.missing_images",
+    "kind": "customer_assertion",
+    "status": "ok",
+    "summary": "Reported: Images missing / cartons diverted",
+    "captured_at": "2026-11-09T06:40:00",
+    "provenance": "ticket (Line 3 operator (ticket), relayed by maintenance technician) via replay of a HAND-AUTHORED fixture (not model output)"
+   },
+   {
+    "id": "E-003",
+    "key": "ticket.claim.replacement_needed",
+    "kind": "customer_assertion",
+    "status": "ok",
+    "summary": "Customer says: send a replacement for Camera 3",
+    "captured_at": "2026-11-09T06:40:00",
+    "provenance": "ticket (Line 3 operator (ticket), relayed by maintenance technician)"
+   },
+   {
+    "id": "E-004",
+    "key": "ticket.claim.works_at_low_speed",
+    "kind": "customer_assertion",
+    "status": "ok",
+    "summary": "Customer says: line looks fine at low speed",
+    "captured_at": "2026-11-09T06:40:00",
+    "provenance": "ticket (Line 3 operator (ticket), relayed by maintenance technician)"
+   },
+   {
+    "id": "E-005",
+    "key": "stream.production",
+    "kind": "observed",
+    "status": "ok",
+    "summary": "64.33% usable at 10.0 cartons/s; late 35.67%, incomplete 0.0%, resend requests 9012; errors {'TOO_MANY_CONSECUTIVE_RESENDS': 128, 'AUTO_ABORTED': 85}",
+    "captured_at": "2026-11-09T06:39:12",
+    "provenance": "tool:inspect_acquisition_stats on plant-a-line3 (simulator sim-1.3)"
+   },
+   {
+    "id": "E-006",
+    "key": "topology",
+    "kind": "observed",
+    "status": "ok",
+    "summary": "uplink egress drops 9560/min; buffer 448 KB; CRC none; PoE 19.2/65 W",
+    "captured_at": "2026-11-09T06:38:00",
+    "provenance": "tool:inspect_topology on plant-a-line3 (simulator sim-1.3)"
+   },
+   {
+    "id": "E-007",
+    "key": "control",
+    "kind": "observed",
+    "status": "ok",
+    "summary": "cam1: ok; cam2: ok; cam3: ok; cam4: ok",
+    "captured_at": "2026-11-09T06:39:06",
+    "provenance": "tool:control_probe on plant-a-line3 (simulator sim-1.3)"
+   },
+   {
+    "id": "E-008",
+    "key": "stream.low",
+    "kind": "observed",
+    "status": "ok",
+    "summary": "100.0% usable at 4.0 cartons/s; late 0.0%, incomplete 0.0%, resend requests 10160",
+    "captured_at": "2026-11-09T06:39:30",
+    "provenance": "tool:inspect_acquisition_stats on plant-a-line3 (simulator sim-1.3)"
+   },
+   {
+    "id": "E-009",
+    "key": "plc",
+    "kind": "observed",
+    "status": "ok",
+    "summary": "triggers reach all cameras",
+    "captured_at": "2026-11-09T06:38:06",
+    "provenance": "tool:inspect_plc_link on plant-a-line3 (simulator sim-1.3)"
+   },
+   {
+    "id": "E-010",
+    "key": "host",
+    "kind": "observed",
+    "status": "ok",
+    "summary": "Windows 11 IoT LTSC 24H2, Kestrel Acquisition SDK 3.2.0, CPU p95 34%, image pool 64",
+    "captured_at": "2026-11-09T06:38:42",
+    "provenance": "tool:inspect_host on plant-a-line3 (simulator sim-1.3)"
+   },
+   {
+    "id": "E-011",
+    "key": "stream.single",
+    "kind": "observed",
+    "status": "ok",
+    "summary": "alone: cam1 100.0%, cam2 100.0%, cam3 100.0%, cam4 100.0%",
+    "captured_at": "2026-11-09T06:39:30",
+    "provenance": "tool:inspect_acquisition_stats on plant-a-line3 (simulator sim-1.3)"
+   },
+   {
+    "id": "E-012",
+    "key": "stream.production",
+    "kind": "verification",
+    "status": "ok",
+    "summary": "after I-1: 100.0% usable at 10.0 cartons/s; late 0.0%, incomplete 0.0%, resend requests 0",
+    "captured_at": "2026-11-09T06:38:06",
+    "provenance": "verification:inspect_acquisition_stats"
+   },
+   {
+    "id": "E-013",
+    "key": "control",
+    "kind": "verification",
+    "status": "ok",
+    "summary": "after I-1: cam1: ok; cam2: ok; cam3: ok; cam4: ok",
+    "captured_at": "2026-11-09T06:38:30",
+    "provenance": "verification:control_probe"
+   },
+   {
+    "id": "E-014",
+    "key": "plc",
+    "kind": "verification",
+    "status": "ok",
+    "summary": "after I-1: triggers reach all cameras",
+    "captured_at": "2026-11-09T06:38:18",
+    "provenance": "verification:inspect_plc_link"
+   }
+  ],
+  "customer_assertions": [
+   {
+    "evidence_id": "E-003",
+    "claim": "replacement_needed",
+    "device": "cam3",
+    "status": "contradicted",
+    "evidence": [
+     "E-011"
+    ],
+    "note": "cam3 acquires cleanly when run alone; a replacement camera would not address this evidence."
+   },
+   {
+    "evidence_id": "E-004",
+    "claim": "works_at_low_speed",
+    "device": null,
+    "status": "consistent",
+    "evidence": [
+     "E-008"
+    ],
+    "note": "low-speed history: 100.0% usable"
+   }
+  ],
+  "leading_hypotheses": [
+   {
+    "rule": "H-BURST",
+    "title": "Synchronous camera bursts overflow the switch uplink buffer",
+    "status": "confirmed",
+    "supporting": [
+     "E-005",
+     "E-006",
+     "E-008",
+     "E-011"
+    ],
+    "contradicting": [],
+    "corroborating": [],
+    "reasons": [
+     "\u2713 every camera is clean when acquired alone",
+     "\u2713 switch uplink egress drops during bursts",
+     "\u2713 host is requesting packet resends",
+     "\u2713 same configuration is usable at low line speed"
+    ]
+   }
+  ],
+  "outstanding_hypotheses": [],
+  "engineering_alternatives": [],
+  "reproduction_steps": [],
+  "workaround_status": "Limit each camera to 245 Mb/s (sum fits the 1 Gb/s uplink) \u2192 resolved_verified",
+  "requested_help": null,
+  "guard_events": [
+   {
+    "type": "request_noted",
+    "origin": "ticket",
+    "match": "replacement of cam3",
+    "action": "evaluated as a customer assertion, not executed"
+   }
+  ],
+  "sources": [
+   {
+    "id": "S1",
+    "title": "How to: Troubleshoot Lost Packets or Frames While Using GigE Cameras (Basler)",
+    "url": "https://docs.baslerweb.com/knowledge/how-to-troubleshoot-lost-packets-or-frames-while-using-gige-cameras",
+    "evidence_type": "vendor_kb",
+    "applicability": "GigE Vision cameras in general; NIC steps written for Windows; parameter names vary by model."
+   },
+   {
+    "id": "S5",
+    "title": "'The acquisition failed abnormally' with 'Buffer retrieve failed' errors (Cognex)",
+    "url": "https://support.cognex.com/en/help-articles/the-acquisition-failed-abnormally-with-buffer-retrieve-failed-errors-on-acquisition",
+    "evidence_type": "vendor_kb",
+    "applicability": "Cognex software with the Pleora driver (article dated 2025-03-12). LineSight uses the distinction, not the product."
+   }
+  ]
+ }
+}

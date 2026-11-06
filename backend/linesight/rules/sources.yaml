@@ -1,0 +1,104 @@
+# Source register. Paraphrases only; no copied article text or issue code.
+# Retrieval date is when LineSight's author read the page.
+# Evidence types: vendor_kb (vendor support/knowledge article), vendor_docs (product documentation),
+# public_issue (user report; observation, not proof of root cause).
+- id: S1
+  url: https://docs.baslerweb.com/knowledge/how-to-troubleshoot-lost-packets-or-frames-while-using-gige-cameras
+  title: "How to: Troubleshoot Lost Packets or Frames While Using GigE Cameras (Basler)"
+  retrieved: 2026-11-07
+  evidence_type: vendor_kb
+  paraphrase: >
+    When several GigE cameras transmit at the same time (for example on a shared hardware trigger),
+    the burst can temporarily overfill switch or NIC buffers. Suggested remedies: check lost
+    packet/frame statistics, raise NIC receive descriptors and jumbo-frame size, lower interrupt
+    moderation, keep packet size within the NIC limit, increase inter-packet delay until losses stop
+    while still meeting the needed frame rate, and optionally add per-camera frame transmission delay.
+  applicability: "GigE Vision cameras in general; NIC steps written for Windows; parameter names vary by model."
+  documented_outcome: "Guidance article; no measured deployment outcome. Notes that a large inter-packet delay lowers the maximum frame rate."
+  unresolved_questions: "No formula or numeric buffer sizes given; the article's example packet sizes are labelled ambiguously."
+  used_by: [H-BURST, PB-PACING, case family burst_contention]
+  fixture_relation: documented_mechanism_replay
+
+- id: S2
+  url: https://support.cognex.com/en/help-articles/in-sight-vision-suite-needs-the-correct-adapter-installed-for-connecting-a-device
+  title: "In-Sight Vision Suite Needs the Correct Adapter Installed for Connecting a Device (Cognex)"
+  retrieved: 2026-11-07
+  evidence_type: vendor_kb
+  paraphrase: >
+    A device can appear in the network device list yet refuse a connection when the software lacks the
+    adapter version that matches the device firmware. Fix by updating the device firmware to an
+    installed version or installing the adapter that fits the firmware. Software and firmware version
+    numbers are not the same scheme.
+  applicability: "In-Sight Vision Suite devices (article dated 2024-09-15). LineSight models the mechanism with a fictional, authored matrix."
+  documented_outcome: "Two documented remedies; no deployment measurement."
+  unresolved_questions: "Real adapter/firmware pairings are not reproduced; LineSight's matrix is fictional."
+  used_by: [H-ADAPTER, H-UNRELEASED-FW, PB-ADAPTER]
+  fixture_relation: documented_mechanism_replay
+
+- id: S3
+  url: https://docs.baslerweb.com/troubleshooting
+  title: "Troubleshooting (Basler pylon documentation) — entry on 'device is already connected' after a crash"
+  retrieved: 2026-11-07
+  evidence_type: vendor_docs
+  paraphrase: >
+    After an application crashes or is killed, restarting can fail because the camera keeps the old
+    connection until the GigE Vision heartbeat timeout expires. The page says this typically occurs
+    when debugging with pylon 7.0 or earlier; later versions close the connection automatically at
+    program termination. Remedies: power-cycle or briefly disconnect the camera (also when the
+    heartbeat timeout was increased); heartbeat control is described elsewhere in the docs.
+  applicability: "Scoped to pylon <= 7.0 under a debugger. LineSight's fictional SDK models an analogous scope (SDK < 3.0 with debug heartbeat)."
+  documented_outcome: "Behaviour documented as changed in later versions; no claim that every SDK behaves this way."
+  unresolved_questions: "The exact heartbeat value used by debug builds is not stated on the page read."
+  used_by: [H-STALE-LOCK, PB-RELEASE-LOCK, KI-KESTREL-LOCK-RETAIN]
+  fixture_relation: documented_mechanism_replay
+
+- id: S4
+  url: https://docs.adaptive-vision.com/current/studio/technical_issues/gigevision/KnownIssues.html
+  title: "Known Issues — GigE Vision (Aurora Vision Studio 5.7)"
+  retrieved: 2026-11-07
+  evidence_type: vendor_docs
+  paraphrase: >
+    Lists vendor-specific interoperability workarounds: transport/caching settings for one vendor's
+    cameras, an 'ignore image trailer' setting for another vendor that must be reverted before using
+    other devices, a specific camera model whose firmware revision needed an update, and a 3D
+    pixel-format double-setting failure. Includes a generic basic-troubleshooting checklist.
+  applicability: "Each workaround is scoped by vendor, model or firmware. LineSight's fictional Talon camera models the trailer and firmware entries; the 3D pixel-format entry is out of scope for a 2D label line."
+  documented_outcome: "Workarounds listed; a newer firmware revision is reported to work for the named model."
+  unresolved_questions: "No root-cause detail beyond the vendor behaviour description."
+  used_by: [H-TRAILER, H-TRAILER-MISAPPLIED, H-FW-DEFECT, PB-TRAILER, PB-FW-UPDATE]
+  fixture_relation: documented_mechanism_replay
+
+- id: S5
+  url: https://support.cognex.com/en/help-articles/the-acquisition-failed-abnormally-with-buffer-retrieve-failed-errors-on-acquisition
+  title: "'The acquisition failed abnormally' with 'Buffer retrieve failed' errors (Cognex)"
+  retrieved: 2026-11-07
+  evidence_type: vendor_kb
+  paraphrase: >
+    Distinguishes error variants with a similar surface: consecutive-resend failures mean packets in
+    the middle of a frame went missing; auto-abort means the tail of the frame did not arrive in time
+    (which the driver cannot distinguish from a camera pausing). Both usually indicate bandwidth
+    problems. Other 'acquisition failed' variants have different origins: register write errors
+    (compatibility; decimal-comma locale), timing errors (compatibility/firewall), and image pool
+    full (images too large or too many buffered).
+  applicability: "Cognex software with the Pleora driver (article dated 2025-03-12). LineSight uses the distinction, not the product."
+  documented_outcome: "Remedy checklist; no measured outcome."
+  unresolved_questions: "Thresholds such as recommended packet size and receive buffers are product-specific."
+  used_by: [H-BURST, H-HOST-BACKPRESSURE, H-LOCALE]
+  fixture_relation: documented_mechanism_replay
+
+- id: S6
+  url: https://github.com/basler/pypylon/issues/863
+  title: "GigE Cameras experience Heartbeat timeout after periods of inactivity (basler/pypylon #863)"
+  retrieved: 2026-11-07
+  evidence_type: public_issue
+  paraphrase: >
+    A user reports four PoE GigE cameras on software triggers that lock out after roughly an hour of
+    inactivity following a move from a Windows 10 laptop to a Windows 11 mini PC. A packet capture
+    shows heartbeat writes acknowledged until a gap of about 3.2 s, after which all cameras answer
+    access-denied. The reporter planned a polling-interval change while noting it would not address
+    the root cause.
+  applicability: "One user's setup (pypylon 4.2.0, pylon 10.2.1, Windows 11 24H2). An observation, not a confirmed root cause."
+  documented_outcome: "Open when read on 2026-11-07; no maintainer response or confirmed resolution visible."
+  unresolved_questions: "Why the heartbeat gap appears after idle; whether host power management, timer behaviour or the SDK is involved."
+  used_by: [H-HEARTBEAT-GAP, Demo C]
+  fixture_relation: adaptation_of_unresolved_report

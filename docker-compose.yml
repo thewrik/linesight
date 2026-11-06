@@ -1,0 +1,11 @@
+services:
+  linesight:
+    build: .
+    ports: ["8000:8000"]
+    volumes: ["linesight-data:/data"]
+    environment:
+      # Optional: enables the live model mode. Leave unset for rules/replay only.
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      LINESIGHT_MODEL: ${LINESIGHT_MODEL:-claude-opus-5-5}
+volumes:
+  linesight-data:

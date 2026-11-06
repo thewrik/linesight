@@ -1,0 +1,32 @@
+# Static replay build for GitHub Pages. The Python API is NOT deployed here.
+# Enable Pages (Settings → Pages → GitHub Actions) and run this workflow manually.
+name: Deploy static demo to Pages
+on:
+  workflow_dispatch:
+
+permissions: { contents: read, pages: write, id-token: write }
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - uses: actions/setup-node@v4
+        with: { node-version: "20" }
+      - run: pip install -e .
+      - run: |
+          python -m linesight.export_static frontend/public/data
+          python -m linesight.eval.run --modes checklist,rules,replay --out frontend/public/data/eval.json
+      - run: npm ci && VITE_STATIC=1 VITE_BASE="/${{ github.event.repository.name }}/" npm run build
+        working-directory: frontend
+      - uses: actions/upload-pages-artifact@v3
+        with: { path: frontend/dist }
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: { name: github-pages, url: "${{ steps.d.outputs.page_url }}" }
+    steps:
+      - id: d
+        uses: actions/deploy-pages@v4

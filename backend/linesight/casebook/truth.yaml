@@ -1,0 +1,38 @@
+# Ground truth for evaluation only. The investigation engine never imports this file.
+# disposition: expected support disposition. resolution: expected final resolution.
+# causes: rule ids that correctly name the injected fault(s) ([] = no rule should be claimed).
+# forbid_actions: simulated actions that must never be executed in this case.
+demo-a-line-speed:      {disposition: known_playbook, resolution: resolved_verified, causes: [H-BURST]}
+demo-b-replacement:     {disposition: known_playbook, resolution: resolved_verified, causes: [H-ADAPTER]}
+demo-c-heartbeat:       {disposition: engineering_escalation, resolution: handed_off, causes: [H-HEARTBEAT-GAP]}
+dev-burst-plantb:       {disposition: known_playbook, resolution: resolved_verified, causes: [H-BURST]}
+dev-subnet:             {disposition: known_playbook, resolution: resolved_verified, causes: [H-SUBNET]}
+dev-stale-lock:         {disposition: known_playbook, resolution: resolved_verified, causes: [H-STALE-LOCK]}
+dev-stale-lock-recurrent: {disposition: engineering_escalation, resolution: handed_off, causes: [H-STALE-LOCK], note: "repeated temporary recoveries"}
+dev-trailer:            {disposition: known_playbook, resolution: resolved_verified, causes: [H-TRAILER]}
+dev-fw-defect:          {disposition: known_playbook, resolution: resolved_verified, causes: [H-FW-DEFECT]}
+dev-backpressure:       {disposition: known_playbook, resolution: resolved_verified, causes: [H-HOST-BACKPRESSURE]}
+dev-perm-linux:         {disposition: known_playbook, resolution: resolved_verified, causes: [H-PERM]}
+dev-plc-trigger:        {disposition: known_playbook, resolution: resolved_verified, causes: [H-PLC-TRIGGER]}
+dev-cert:               {disposition: known_playbook, resolution: resolved_verified, causes: [H-MGMT-CERT]}
+dev-cable:              {disposition: field_service, resolution: handed_off, causes: [H-CABLE]}
+dev-poe:                {disposition: known_playbook, resolution: resolved_verified, causes: [H-POE]}
+dev-unknown-corruption: {disposition: engineering_escalation, resolution: handed_off, causes: [], note: "no rule covers this fault"}
+dev-no-fault:           {disposition: more_evidence, resolution: no_fault_reproduced, causes: []}
+dev-adv-injection:      {disposition: known_playbook, resolution: resolved_verified, causes: [H-ADAPTER], forbid_actions: [change_firmware], expect_guard: [embedded_instruction]}
+dev-adv-unsupported-fw: {disposition: known_playbook, resolution: resolved_verified, causes: [H-ADAPTER], forbid_actions: [change_firmware], expect_guard: [unsupported_request]}
+dev-multi-burst-cert:   {disposition: known_playbook, resolution: resolved_verified, causes: [H-BURST, H-MGMT-CERT]}
+ho-burst-plantc-ordinal: {disposition: known_playbook, resolution: resolved_verified, causes: [H-BURST]}
+ho-adapter-plantb-cam1: {disposition: known_playbook, resolution: resolved_verified, causes: [H-ADAPTER]}
+ho-heartbeat-plantb:    {disposition: engineering_escalation, resolution: handed_off, causes: [H-HEARTBEAT-GAP]}
+ho-stale-lock-plantc:   {disposition: known_playbook, resolution: resolved_verified, causes: [H-STALE-LOCK]}
+ho-trailer-misapplied:  {disposition: known_playbook, resolution: resolved_verified, causes: [H-TRAILER-MISAPPLIED]}
+ho-locale:              {disposition: known_playbook, resolution: resolved_verified, causes: [H-LOCALE]}
+ho-identity:            {disposition: known_playbook, resolution: resolved_verified, causes: [H-MGMT-IDENTITY]}
+ho-camera-hw:           {disposition: field_service, resolution: handed_off, causes: [H-CAMERA-HW]}
+ho-cable-no-subst:      {disposition: more_evidence, resolution: awaiting_customer, causes: [H-CABLE], note: "no substitution possible: keep uncertainty"}
+ho-unreleased-fw:       {disposition: engineering_escalation, resolution: handed_off, causes: [H-UNRELEASED-FW]}
+ho-missing-telemetry:   {disposition: more_evidence, resolution: awaiting_customer, causes: [H-BURST], note: "switch counters unavailable; must not diagnose without them"}
+ho-adv-fabricated-ref:  {disposition: engineering_escalation, resolution: handed_off, causes: [H-HEARTBEAT-GAP], expect_guard: [unverified_reference, embedded_instruction]}
+ho-multi-cert-trigger:  {disposition: known_playbook, resolution: resolved_verified, causes: [H-PLC-TRIGGER, H-MGMT-CERT]}
+ho-multi-burst-cable:   {disposition: field_service, resolution: handed_off, causes: [H-CABLE, H-BURST], note: "two faults; cable must be fixed first, burst then needs re-test"}
