@@ -33,8 +33,12 @@ jobs:
           python -m linesight.eval.run --out frontend/public/data/eval.json
       - run: npm ci
         working-directory: frontend
-      - run: npx playwright install --with-deps chromium
+      - name: Install the test browser
         working-directory: frontend
+        # The extra system packages are optional on GitHub's runners; do not let a slow apt mirror hang the job.
+        run: |
+          timeout 150 npx playwright install-deps chromium || echo "::warning::Skipped optional system packages (apt unavailable)"
+          npx playwright install chromium
       - run: npx playwright test
         working-directory: frontend
         env: { CI: "1" }
