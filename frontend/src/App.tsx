@@ -35,7 +35,7 @@ export default function App() {
           {api === undefined ? "…" : api ? `API · ${api.modes.includes("live") ? "live model available" : "no model key"}` : "static replay · no backend"}
         </span>
       </header>
-      <main className="wrap">
+      <main className={page === "home" ? "" : "wrap"}>
         {page === "home" && <Landing />}
         {page === "journey" && <Journey key={route[1]} scenarioId={route[1]} />}
         {page === "case" && api !== undefined && <CaseView key={route[1]} scenarioId={route[1]} api={api} initialStep={route[2] ? Number(route[2]) : undefined} />}

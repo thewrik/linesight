@@ -63,6 +63,9 @@ export const DISP_PLAIN: Record<string, { word: string; line: string }> = {
 };
 
 const pct = (v: number) => `${Math.round(v * 10) / 10}%`;
+/** cam3 → Camera 3 */
+const cam = (c: string) => c.replace(/^cam(\d+)$/, "Camera $1");
+const cams = (list: string[]) => list.map(cam).join(", ");
 
 /** One plain sentence for an observation. */
 export function plainResult(e: Evidence): string {
@@ -71,7 +74,7 @@ export function plainResult(e: Evidence): string {
   switch (e.key) {
     case "stream.production": {
       const bad = Object.entries<any>(d.per_camera ?? {}).filter(([, p]) => p.error).map(([c]) => c);
-      if (bad.length) return `${bad.join(", ")} delivers no usable images at all; overall ${pct(d.usable_frame_pct)} of images are usable.`;
+      if (bad.length) return `${cams(bad)} delivers no usable images at all; overall ${pct(d.usable_frame_pct)} of images are usable.`;
       return d.usable_frame_pct >= 99.5
         ? `${pct(d.usable_frame_pct)} of images arrive complete and on time at full speed.`
         : `Only ${pct(d.usable_frame_pct)} of images are usable at full speed — the rest arrive too late for the reject gate.`;
@@ -82,11 +85,11 @@ export function plainResult(e: Evidence): string {
         : `At low speed ${pct(d.usable_frame_pct)} of images were usable.`;
     case "stream.single": {
       const bad = Object.entries<any>(d.per_camera ?? {}).filter(([, p]) => p.error || p.usable_frame_pct < 99.5).map(([c]) => c);
-      return bad.length ? `Running alone, ${bad.join(", ")} still loses images.` : "Every camera works perfectly when it runs alone. So no camera is broken.";
+      return bad.length ? `Running alone, ${cams(bad)} still loses images.` : "Every camera works perfectly when it runs alone. So no camera is broken.";
     }
     case "topology": {
       const crc = Object.entries<any>(d.links ?? {}).filter(([, l]) => l.crc_errors_per_min > 5).map(([c]) => c);
-      if (crc.length) return `The switch sees damaged data on ${crc.join(", ")}'s link.`;
+      if (crc.length) return `The switch sees damaged data on the link to ${cams(crc)}.`;
       if (d.switch?.poe?.over_budget) return "The switch can't supply enough power when the camera heaters switch on.";
       return d.switch?.uplink_egress_drops_per_min > 0
         ? `The switch is throwing away about ${d.switch.uplink_egress_drops_per_min.toLocaleString()} packets a minute on its single link to the PC.`
@@ -94,14 +97,14 @@ export function plainResult(e: Evidence): string {
     }
     case "discovery":
       return d.devices?.every((x: any) => x.found && x.subnet_ok) ? "All four cameras are visible on the network."
-        : `Visible, but ${d.devices.filter((x: any) => !x.subnet_ok).map((x: any) => x.device).join(", ")} sits on the wrong network address.`;
+        : `Visible, but ${cams(d.devices.filter((x: any) => !x.subnet_ok).map((x: any) => x.device))} sits on the wrong network address.`;
     case "control": {
       const bad = Object.entries<any>(d.results ?? {}).filter(([, r]) => r.result !== "ok");
-      return bad.length ? `${bad.map(([c, r]) => `${c} refuses: ${r.detail}`).join("; ")}.` : "The PC can take control of every camera right now.";
+      return bad.length ? `${bad.map(([c, r]) => `${cam(c)} refuses the PC: ${r.detail}`).join("; ")}.` : "The PC can take control of every camera right now.";
     }
     case "versions": {
       const miss = Object.entries<any>(d.compatibility ?? {}).filter(([, v]) => !v.installed);
-      if (miss.length) return miss.map(([c, v]) => `${c} runs firmware ${v.firmware}; the PC has no matching adapter (${v.required_adapter ?? "none released"}).`).join(" ");
+      if (miss.length) return miss.map(([c, v]) => `${cam(c)} runs firmware ${v.firmware}; the PC has no matching adapter (${v.required_adapter ?? "none released"}).`).join(" ");
       return "Software, adapters and firmware are a known-good combination.";
     }
     case "host":
@@ -110,7 +113,7 @@ export function plainResult(e: Evidence): string {
         : d.migrated_from ? `The PC is healthy, but it was recently migrated from ${d.migrated_from}.` : "The PC has headroom and no permission errors.";
     case "plc": {
       const miss = Object.entries<any>(d.per_camera ?? {}).filter(([, p]) => p.frames_started === 0).map(([c]) => c);
-      return miss.length ? `The controller fires, but ${miss.join(", ")} never receives the signal.` : "Every 'take a picture' signal arrives and gets an answer.";
+      return miss.length ? `The controller fires, but ${cams(miss)} never receives the signal.` : "Every 'take a picture' signal arrives and gets an answer.";
     }
     case "mgmt":
       return d.tls_state === "connected" ? "The dashboard is receiving fresh updates." : `The dashboard is stale: ${d.tls_state}. Inspection itself keeps running.`;
@@ -131,3 +134,21 @@ export function lensCost(effort: number, disruption: number, tech: boolean): str
   if (disruption) return `Needs a test window of roughly ${disruption * 5} minutes on the line (illustrative).`;
   return "Remote and read-only: no line stop, no technician time.";
 }
+
+const OPTION_PLAIN: [string, string][] = [
+  ["O-PACE-FAIR", "Have each camera send a little slower, so all four fit through the link together"],
+  ["O-STAGGER", "Let the cameras take turns sending"],
+  ["O-PACE-LOW", "Slow every camera right down"],
+  ["O-SLOW-LINE", "Run the whole line slower"],
+  ["O-INSTALL", "Install the matching software on the PC"],
+  ["O-FW", "Downgrade the new camera's firmware"],
+];
+/** Plain name for a fix option; falls back to the engine's own title. */
+export function optionPlain(id: string, title: string): string {
+  return OPTION_PLAIN.find(([p]) => id.startsWith(p))?.[1] ?? title;
+}
+
+export const STATUS_PLAIN: Record<string, string> = {
+  untested: "still possible", contradicted: "ruled out", supported: "evidence points here", confirmed: "confirmed by the fix",
+  refuted_by_verification: "the fix did not hold",
+};

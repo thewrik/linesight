@@ -15,8 +15,8 @@ test("landing explains the incident and offers three demos", async ({ page }) =>
   await expect(page.getByText("Camera 3 keeps going offline").first()).toBeVisible();
   await expect(page.locator(".demo-card")).toHaveCount(3);
   await page.getByTestId("journey-demo-a-line-speed").click();
-  await expect(page.locator(".gate")).toHaveCount(11);
-  await expect(page.getByText("static replay · no backend")).toBeVisible();
+  await expect(page.locator(".pip")).toHaveCount(11);
+  await expect(page.getByText("static replay · no backend")).toBeAttached(); // the pill is hidden on phones
 });
 
 test("Demo A: burst contention resolved by pacing and verified", async ({ page }) => {

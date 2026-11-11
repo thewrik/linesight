@@ -2,7 +2,7 @@
 
 **Evidence-led triage for industrial machine-vision incidents.** A portfolio project. The plant, its products and its telemetry are fictional and simulated.
 
-**Live demo (static replay, no backend):** https://thewrik.github.io/linesight/ · start with [Walk the journey](https://thewrik.github.io/linesight/#/journey/demo-a-line-speed)
+**Live demo (static replay, no backend):** https://thewrik.github.io/linesight/ · or go straight to [the first investigation](https://thewrik.github.io/linesight/#/journey/demo-a-line-speed)
 
 > **Monday, 06:40, Line 3.** A contract-packaging line inspects printed labels and batch codes before cartons are sealed. Four GigE cameras feed an edge PC through a managed PoE switch. The PLC triggers each camera and waits for a pass/fail result, and a management service reports to the plant dashboard. Over the weekend, maintenance replaced the edge PC and the switch. At low speed the line looks healthy. At production speed, images go missing and cartons are diverted to manual inspection.
 >
@@ -10,24 +10,34 @@
 
 "Offline" could mean five different things: discovery failed, control access failed, image transport failed, a trigger never arrived, or the dashboard is stale while acquisition is fine. LineSight is the first-line support engineer's tool for working out which one it is. It runs cheap read-only checks that tell causes apart and asks the technician for one observation at a time. It resolves routine faults through scoped playbooks and verifies the recovery before closing. When a fault needs engineering, it writes a cited handoff.
 
-## Walk the journey
+## Watch the line, then investigate it
 
-Each investigation is a trail of **gates**. Press and hold a gate (or press Enter) to run its check. As each one opens, the **decision tree** on the left closes the branches the evidence rules out, until one path is left. There is a fork where the candidate fixes are tested against the customer's requirements, a proof gate where fresh measurements must pass, and a verdict.
+The site opens on a **live simulation of the packaging line**: cartons ride the conveyor, four cameras fire, pictures travel through the switch to the inspection PC, and the PC's answer races each carton to the reject gate. When the answer loses the race, the carton is pushed off to manual inspection and the pile grows. A switch on the first page drops the line to low speed, where the fault disappears. That is why the weekend test run passed.
 
-The same journey reads three ways. You can switch lens at any gate:
+Each case is then a short investigation carried out on that line:
 
-| Lens | For | What each gate shows |
+* **Hold to run a check.** The line reacts. A low-speed test slows the belt, a one-camera test fires them in turn, a control probe pings each camera, and the switch check reveals its buffer overflowing.
+* **Suspects clear part by part.** Cameras, cables, switch, PC, line controller and dashboard all start as suspects. Evidence ticks them off until one is left, and that part is ringed on the line.
+* **Try the fixes before trusting one.** Tap a candidate fix and the line runs with it. Two of the four options for Demo A only look like fixes: one makes every carton miss the gate, and one works only by running the line slower than the plant needs.
+* **Prove it.** The chosen change is applied and the line is measured again before the case closes.
+
+The same case reads three ways. You can switch lens at any step:
+
+| Lens | For | What each step shows |
 |---|---|---|
-| **Story** | anyone, including a non-technical reviewer | the question in plain words, what was found, and which possibilities closed |
-| **Engineer** | engineers | rule ids, scoring, evidence provenance and raw data, rule conditions, and a deep link into the full console at that step |
+| **Story** | anyone, including a non-technical reviewer | the question in plain words, what was found, and which part of the line was cleared |
+| **Engineer** | engineers | rule ids, scoring, evidence provenance and raw data, firmware and adapter tags on the line, and a deep link into the full console at that step |
 | **Lead** | deployment and support leads | diverted cartons per hour, technician minutes, line-stop time, and a ledger of each call made and what it was chosen over |
 
-The design borrows from explorable explanations: R2D3's *Visual Introduction to Machine Learning* (data flowing down a decision tree), Nicky Case's explorables and Bartosz Ciechanowski's hands-on articles, and The Pudding's guided scrollytelling.
+**What the animation is and is not.** It is slow-motion choreography of the recorded engine run. The share of late answers, the latency against the reject-gate deadline, the line rates and each fix's predicted outcome are read from the engine's evidence. The moving dots and cartons illustrate those numbers and are not a second simulation.
 
-![Journey, story lens](docs/screenshots/journey-story.png)
-![Fork: candidate fixes tested against the requirement](docs/screenshots/journey-fork.png)
+The approach borrows from explorable explanations: Bartosz Ciechanowski's hands-on articles, Nicky Case's explorables, R2D3's *Visual Introduction to Machine Learning* and The Pudding's guided stories.
+
+![The line, with the fault visible](docs/screenshots/landing.png)
+![A check lights up the switch](docs/screenshots/journey-story.png)
+![Trying a fix that only looks like one](docs/screenshots/journey-fork.png)
 ![Verdict, lead lens](docs/screenshots/journey-lead-verdict.png)
-![Escalation, engineer lens](docs/screenshots/journey-engineer-escalation.png)
+![A locked-out line and an engineering handoff](docs/screenshots/journey-engineer-escalation.png)
 
 The **engineering console** (`#/case/<demo>`) is the dense view: topology with per-path status, candidate explanations, the diagnostic graph, the trace, and the exportable handoff.
 
@@ -41,7 +51,6 @@ The **engineering console** (`#/case/<demo>`) is the dense view: topology with p
 
 <details><summary>Console screenshots</summary>
 
-![Landing](docs/screenshots/landing.png)
 ![Demo A options](docs/screenshots/demo-a-options.png)
 ![Demo B topology](docs/screenshots/demo-b-topology.png)
 ![Demo C handoff](docs/screenshots/demo-c-handoff.png)
@@ -88,7 +97,7 @@ In a second terminal:
 ```bash
 npm --prefix frontend ci && npm --prefix frontend run dev
 ```
-Open http://localhost:5173 and pick **Walk the journey**. Without the API, the same UI runs as a **static replay** of recorded engine runs. The journey always plays the recorded run; the console runs live when the API is up.
+Open http://localhost:5173 and pick **Investigate this line**. Without the API, the same UI runs as a **static replay** of recorded engine runs. The simulated line always plays the recorded run; the console runs live when the API is up.
 
 Docker (API and built UI on one port; the key is optional):
 
@@ -157,7 +166,7 @@ The casebook mirrors mechanisms from six public sources: Basler packet-loss guid
 
 ```
 backend/linesight/   models · station · simulator/ · engine/ · rules/ (rules.yaml, sources.yaml) · casebook/ · llm/ · eval/ · api.py
-frontend/            React + TypeScript UI, Playwright tests, static replay data
+frontend/            React + TypeScript UI (src/sim is the canvas line simulation), Playwright tests, static replay data
 tests/               pytest behaviour tests
 docs/                architecture, evaluation results, sample evidence bundles and handoffs, screenshots
 ```

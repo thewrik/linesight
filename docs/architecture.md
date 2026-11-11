@@ -86,3 +86,20 @@ The GitHub Pages build contains recorded engine snapshots (`frontend/public/data
 without a backend. Only the recorded (recommended) intervention can be applied there; other options show their
 predicted outcomes. With the API (`uvicorn` or Docker) every step runs live against the simulator, any offered
 option can be applied, and the live model mode is available when a key is configured on the server.
+
+## The line simulation in the UI
+
+`frontend/src/sim` draws the packaging line on a canvas and is separate from the Python simulator.
+
+* `scene.ts` reads one recorded snapshot and produces a `Scene`: the line rate, the share of late answers,
+  result latency against the reject-gate deadline, which cameras are acquiring, which layers have been
+  revealed by evidence so far, and the status of each physical part (derived from rule statuses). A test
+  step (low speed, one camera at a time) or a previewed fix overrides those values from that step's
+  evidence or the option's prediction. No value is invented in the UI.
+* `engine.ts` choreographs the scene in slow motion. For each carton it schedules the camera flashes,
+  the packets through the switch, and the answer that races the carton to the gate. Whether a carton is
+  late is fixed by the recorded late share; the dots only illustrate it.
+* `render.ts` paints back to front in one oblique projection. On small screens the camera moves to the
+  part in focus.
+
+The animation is therefore an illustration of the engine's recorded numbers, not a second model.
